@@ -1,0 +1,102 @@
+Array
+(
+    [0] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-includes/template-loader.php
+            [line] => 106
+            [function] => include
+        )
+
+    [1] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-blog-header.php
+            [line] => 19
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-includes/template-loader.php
+                )
+
+            [function] => require_once
+        )
+
+    [2] => Array
+        (
+            [file] => /var/www/html/wordpress/index.php
+            [line] => 17
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-blog-header.php
+                )
+
+            [function] => require
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-includes/template-loader.php
+            [line] => 106
+            [function] => include
+        )
+
+    [1] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-blog-header.php
+            [line] => 19
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-includes/template-loader.php
+                )
+
+            [function] => require_once
+        )
+
+    [2] => Array
+        (
+            [file] => /var/www/html/wordpress/index.php
+            [line] => 17
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-blog-header.php
+                )
+
+            [function] => require
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-includes/template-loader.php
+            [line] => 106
+            [function] => include
+        )
+
+    [1] => Array
+        (
+            [file] => /var/www/html/wordpress/wp-blog-header.php
+            [line] => 19
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-includes/template-loader.php
+                )
+
+            [function] => require_once
+        )
+
+    [2] => Array
+        (
+            [file] => /var/www/html/wordpress/index.php
+            [line] => 17
+            [args] => Array
+                (
+                    [0] => /var/www/html/wordpress/wp-blog-header.php
+                )
+
+            [function] => require
+        )
+
+)
