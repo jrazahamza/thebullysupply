@@ -1,0 +1,983 @@
+<?php
+
+/* Outputs an array of selected fonts from the Font Manager */
+function gusta_get_selected_fonts () {
+	$selected_fonts = gusta_get_safe_fonts ();
+		
+	$google_fonts = gusta_get_google_selected_fonts();
+	if ($google_fonts):
+		$selected_fonts = array_merge ($google_fonts, $selected_fonts);
+	endif;
+	
+	if (get_option('options_gusta_adobe_typekit_kit_id')):
+		$selected_fonts = array_merge (gusta_get_adobe_fonts(), $selected_fonts);
+	endif;
+	
+	$mywebfonts = gusta_my_web_fonts_dropdown ();
+	if ($mywebfonts):
+		$selected_fonts = array_merge ($mywebfonts, $selected_fonts);
+	endif;
+	
+	return $selected_fonts;
+}
+
+/* Google Fonts API Verification */
+function gusta_get_google_fonts_api () {
+	global $google_fonts_json;
+	if ($google_fonts_json!=""):
+		return $google_fonts_json;
+	else:
+		$apikey = get_option('options_gusta_google_api_key');
+		if ($apikey):
+			$google_fonts_service = file_get_contents("https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=".$apikey."");
+			$google_fonts_json = json_decode($google_fonts_service, true);
+			return $google_fonts_json;
+		endif;
+		return false;
+	endif;
+}
+
+/* Outputs an array of Google Fonts available. If Google API is not validated, it returns a static array of Google Fonts */
+function gusta_get_google_fonts () {
+	$apikey = get_option('options_gusta_google_api_key');
+	$googlefonts = gusta_get_google_fonts_api ();
+	if ($apikey && $googlefonts):
+		$fonts = array();
+		foreach ($googlefonts["items"] as $font):
+			$fonts[$font["family"]] = $font["family"];
+		endforeach;
+	else:
+		$static_fonts = array(
+			'ABeeZee',
+			'Abel',
+			'Abril Fatface',
+			'Aclonica',
+			'Acme',
+			'Actor',
+			'Adamina',
+			'Advent Pro',
+			'Aguafina Script',
+			'Akronim',
+			'Aladin',
+			'Aldrich',
+			'Alef',
+			'Alegreya',
+			'Alegreya Sans',
+			'Alegreya Sans SC',
+			'Alegreya SC',
+			'Alex Brush',
+			'Alfa Slab One',
+			'Alice',
+			'Alike',
+			'Alike Angular',
+			'Allan',
+			'Allerta',
+			'Allerta Stencil',
+			'Allura',
+			'Almendra',
+			'Almendra Display',
+			'Almendra SC',
+			'Amarante',
+			'Amaranth',
+			'Amatic SC',
+			'Amethysta',
+			'Amiri',
+			'Amita',
+			'Anaheim',
+			'Andada',
+			'Andika',
+			'Angkor',
+			'Annie Use Your Telescope',
+			'Anonymous Pro',
+			'Antic',
+			'Antic Didone',
+			'Antic Slab',
+			'Anton',
+			'Arapey',
+			'Arbutus',
+			'Arbutus Slab',
+			'Architects Daughter',
+			'Archivo Black',
+			'Archivo Narrow',
+			'Arimo',
+			'Arizonia',
+			'Armata',
+			'Artifika',
+			'Arvo',
+			'Arya',
+			'Asap',
+			'Asar',
+			'Asset',
+			'Astloch',
+			'Asul',
+			'Atomic Age',
+			'Aubrey',
+			'Audiowide',
+			'Autour One',
+			'Average',
+			'Average Sans',
+			'Averia Gruesa Libre',
+			'Averia Libre',
+			'Averia Sans Libre',
+			'Averia Serif Libre',
+			'Bad Script',
+			'Balthazar',
+			'Bangers',
+			'Basic',
+			'Battambang',
+			'Baumans',
+			'Bayon',
+			'Belgrano',
+			'Belleza',
+			'BenchNine',
+			'Bentham',
+			'Berkshire Swash',
+			'Bevan',
+			'Bigelow Rules',
+			'Bigshot One',
+			'Bilbo',
+			'Bilbo Swash Caps',
+			'Biryani',
+			'Bitter',
+			'Black Ops One',
+			'Bokor',
+			'Bonbon',
+			'Boogaloo',
+			'Bowlby One',
+			'Bowlby One SC',
+			'Brawler',
+			'Bree Serif',
+			'Bubblegum Sans',
+			'Bubbler One',
+			'Buda',
+			'Buenard',
+			'Butcherman',
+			'Butterfly Kids',
+			'Cabin',
+			'Cabin Condensed',
+			'Cabin Sketch',
+			'Caesar Dressing',
+			'Cagliostro',
+			'Calligraffitti',
+			'Cambay',
+			'Cambo',
+			'Candal',
+			'Cantarell',
+			'Cantata One',
+			'Cantora One',
+			'Capriola',
+			'Cardo',
+			'Carme',
+			'Carrois Gothic',
+			'Carrois Gothic SC',
+			'Carter One',
+			'Catamaran',
+			'Caudex',
+			'Cedarville Cursive',
+			'Ceviche One',
+			'Changa One',
+			'Chango',
+			'Chau Philomene One',
+			'Chela One',
+			'Chelsea Market',
+			'Chenla',
+			'Cherry Cream Soda',
+			'Cherry Swash',
+			'Chewy',
+			'Chicle',
+			'Chivo',
+			'Chonburi',
+			'Cinzel',
+			'Cinzel Decorative',
+			'Clicker Script',
+			'Coda',
+			'Coda Caption',
+			'Codystar',
+			'Combo',
+			'Comfortaa',
+			'Coming Soon',
+			'Concert One',
+			'Condiment',
+			'Content',
+			'Contrail One',
+			'Convergence',
+			'Cookie',
+			'Copse',
+			'Corben',
+			'Courgette',
+			'Cousine',
+			'Coustard',
+			'Covered By Your Grace',
+			'Crafty Girls',
+			'Creepster',
+			'Crete Round',
+			'Crimson Text',
+			'Croissant One',
+			'Crushed',
+			'Cuprum',
+			'Cutive',
+			'Cutive Mono',
+			'Damion',
+			'Dancing Script',
+			'Dangrek',
+			'Dawning of a New Day',
+			'Days One',
+			'Dekko',
+			'Delius',
+			'Delius Swash Caps',
+			'Delius Unicase',
+			'Della Respira',
+			'Denk One',
+			'Devonshire',
+			'Dhurjati',
+			'Didact Gothic',
+			'Diplomata',
+			'Diplomata SC',
+			'Domine',
+			'Donegal One',
+			'Doppio One',
+			'Dorsa',
+			'Dosis',
+			'Dr Sugiyama',
+			'Droid Sans',
+			'Droid Sans Mono',
+			'Droid Serif',
+			'Duru Sans',
+			'Dynalight',
+			'Eagle Lake',
+			'Eater',
+			'EB Garamond',
+			'Economica',
+			'Eczar',
+			'Ek Mukta',
+			'Electrolize',
+			'Elsie',
+			'Elsie Swash Caps',
+			'Emblema One',
+			'Emilys Candy',
+			'Engagement',
+			'Englebert',
+			'Enriqueta',
+			'Erica One',
+			'Esteban',
+			'Euphoria Script',
+			'Ewert',
+			'Exo',
+			'Exo 2',
+			'Expletus Sans',
+			'Fanwood Text',
+			'Fascinate',
+			'Fascinate Inline',
+			'Faster One',
+			'Fasthand',
+			'Fauna One',
+			'Federant',
+			'Federo',
+			'Felipa',
+			'Fenix',
+			'Finger Paint',
+			'Fira Mono',
+			'Fira Sans',
+			'Fjalla One',
+			'Fjord One',
+			'Flamenco',
+			'Flavors',
+			'Fondamento',
+			'Fontdiner Swanky',
+			'Forum',
+			'Francois One',
+			'Freckle Face',
+			'Fredericka the Great',
+			'Fredoka One',
+			'Freehand',
+			'Fresca',
+			'Frijole',
+			'Fruktur',
+			'Fugaz One',
+			'Gabriela',
+			'Gafata',
+			'Galdeano',
+			'Galindo',
+			'Gentium Basic',
+			'Gentium Book Basic',
+			'Geo',
+			'Geostar',
+			'Geostar Fill',
+			'Germania One',
+			'GFS Didot',
+			'GFS Neohellenic',
+			'Gidugu',
+			'Gilda Display',
+			'Give You Glory',
+			'Glass Antiqua',
+			'Glegoo',
+			'Gloria Hallelujah',
+			'Goblin One',
+			'Gochi Hand',
+			'Gorditas',
+			'Goudy Bookletter 1911',
+			'Graduate',
+			'Grand Hotel',
+			'Gravitas One',
+			'Great Vibes',
+			'Griffy',
+			'Gruppo',
+			'Gudea',
+			'Gurajada',
+			'Habibi',
+			'Halant',
+			'Hammersmith One',
+			'Hanalei',
+			'Hanalei Fill',
+			'Handlee',
+			'Hanuman',
+			'Happy Monkey',
+			'Headland One',
+			'Henny Penny',
+			'Herr Von Muellerhoff',
+			'Hind',
+			'Holtwood One SC',
+			'Homemade Apple',
+			'Homenaje',
+			'Iceberg',
+			'Iceland',
+			'IM Fell Double Pica',
+			'IM Fell Double Pica SC',
+			'IM Fell DW Pica',
+			'IM Fell DW Pica SC',
+			'IM Fell English',
+			'IM Fell English SC',
+			'IM Fell French Canon',
+			'IM Fell French Canon SC',
+			'IM Fell Great Primer',
+			'IM Fell Great Primer SC',
+			'Imprima',
+			'Inconsolata',
+			'Inder',
+			'Indie Flower',
+			'Inika',
+			'Inknut Antiqua',
+			'Irish Grover',
+			'Istok Web',
+			'Italiana',
+			'Italianno',
+			'Itim',
+			'Jacques Francois',
+			'Jacques Francois Shadow',
+			'Jaldi',
+			'Jim Nightshade',
+			'Jockey One',
+			'Jolly Lodger',
+			'Josefin Sans',
+			'Josefin Slab',
+			'Joti One',
+			'Judson',
+			'Julee',
+			'Julius Sans One',
+			'Junge',
+			'Jura',
+			'Just Another Hand',
+			'Just Me Again Down Here',
+			'Kadwa',
+			'Kalam',
+			'Kameron',
+			'Kantumruy',
+			'Karla',
+			'Karma',
+			'Kaushan Script',
+			'Kavoon',
+			'Kdam Thmor',
+			'Keania One',
+			'Kelly Slab',
+			'Kenia',
+			'Khand',
+			'Khmer',
+			'Khula',
+			'Kite One',
+			'Knewave',
+			'Kotta One',
+			'Koulen',
+			'Kranky',
+			'Kreon',
+			'Kristi',
+			'Krona One',
+			'Kurale',
+			'La Belle Aurore',
+			'Laila',
+			'Lakki Reddy',
+			'Lancelot',
+			'Lateef',
+			'Lato',
+			'League Script',
+			'Leckerli One',
+			'Ledger',
+			'Lekton',
+			'Lemon',
+			'Libre Baskerville',
+			'Life Savers',
+			'Lilita One',
+			'Lily Script One',
+			'Limelight',
+			'Linden Hill',
+			'Lobster',
+			'Lobster Two',
+			'Londrina Outline',
+			'Londrina Shadow',
+			'Londrina Sketch',
+			'Londrina Solid',
+			'Lora',
+			'Love Ya Like A Sister',
+			'Loved by the King',
+			'Lovers Quarrel',
+			'Luckiest Guy',
+			'Lusitana',
+			'Lustria',
+			'Macondo',
+			'Macondo Swash Caps',
+			'Magra',
+			'Maiden Orange',
+			'Mako',
+			'Mallanna',
+			'Mandali',
+			'Marcellus',
+			'Marcellus SC',
+			'Marck Script',
+			'Margarine',
+			'Marko One',
+			'Marmelad',
+			'Martel',
+			'Martel Sans',
+			'Marvel',
+			'Mate',
+			'Mate SC',
+			'Maven Pro',
+			'McLaren',
+			'Meddon',
+			'MedievalSharp',
+			'Medula One',
+			'Megrim',
+			'Meie Script',
+			'Merienda',
+			'Merienda One',
+			'Merriweather',
+			'Merriweather Sans',
+			'Metal',
+			'Metal Mania',
+			'Metamorphous',
+			'Metrophobic',
+			'Michroma',
+			'Milonga',
+			'Miltonian',
+			'Miltonian Tattoo',
+			'Miniver',
+			'Miss Fajardose',
+			'Modak',
+			'Modern Antiqua',
+			'Molengo',
+			'Molle',
+			'Monda',
+			'Monofett',
+			'Monoton',
+			'Monsieur La Doulaise',
+			'Montaga',
+			'Montez',
+			'Montserrat',
+			'Montserrat Alternates',
+			'Montserrat Subrayada',
+			'Moul',
+			'Moulpali',
+			'Mountains of Christmas',
+			'Mouse Memoirs',
+			'Mr Bedfort',
+			'Mr Dafoe',
+			'Mr De Haviland',
+			'Mrs Saint Delafield',
+			'Mrs Sheppards',
+			'Muli',
+			'Mystery Quest',
+			'Neucha',
+			'Neuton',
+			'New Rocker',
+			'News Cycle',
+			'Niconne',
+			'Nixie One',
+			'Nobile',
+			'Nokora',
+			'Norican',
+			'Nosifer',
+			'Nothing You Could Do',
+			'Noticia Text',
+			'Noto Sans',
+			'Noto Serif',
+			'Nova Cut',
+			'Nova Flat',
+			'Nova Mono',
+			'Nova Oval',
+			'Nova Round',
+			'Nova Script',
+			'Nova Slim',
+			'Nova Square',
+			'NTR',
+			'Numans',
+			'Nunito',
+			'Odor Mean Chey',
+			'Offside',
+			'Old Standard TT',
+			'Oldenburg',
+			'Oleo Script',
+			'Oleo Script Swash Caps',
+			'Open Sans',
+			'Open Sans Condensed',
+			'Oranienbaum',
+			'Orbitron',
+			'Oregano',
+			'Orienta',
+			'Original Surfer',
+			'Oswald',
+			'Over the Rainbow',
+			'Overlock',
+			'Overlock SC',
+			'Ovo',
+			'Oxygen',
+			'Oxygen Mono',
+			'Pacifico',
+			'Palanquin',
+			'Palanquin Dark',
+			'Paprika',
+			'Parisienne',
+			'Passero One',
+			'Passion One',
+			'Pathway Gothic One',
+			'Patrick Hand',
+			'Patrick Hand SC',
+			'Patua One',
+			'Paytone One',
+			'Peddana',
+			'Peralta',
+			'Permanent Marker',
+			'Petit Formal Script',
+			'Petrona',
+			'Philosopher',
+			'Piedra',
+			'Pinyon Script',
+			'Pirata One',
+			'Plaster',
+			'Play',
+			'Playball',
+			'Playfair Display',
+			'Playfair Display SC',
+			'Podkova',
+			'Poiret One',
+			'Poller One',
+			'Poly',
+			'Pompiere',
+			'Pontano Sans',
+			'Poppins',
+			'Port Lligat Sans',
+			'Port Lligat Slab',
+			'Pragati Narrow',
+			'Prata',
+			'Preahvihear',
+			'Press Start 2P',
+			'Princess Sofia',
+			'Prociono',
+			'Prosto One',
+			'PT Mono',
+			'PT Sans',
+			'PT Sans Caption',
+			'PT Sans Narrow',
+			'PT Serif',
+			'PT Serif Caption',
+			'Puritan',
+			'Purple Purse',
+			'Quando',
+			'Quantico',
+			'Quattrocento',
+			'Quattrocento Sans',
+			'Questrial',
+			'Quicksand',
+			'Quintessential',
+			'Qwigley',
+			'Racing Sans One',
+			'Radley',
+			'Rajdhani',
+			'Raleway',
+			'Raleway Dots',
+			'Ramabhadra',
+			'Ramaraja',
+			'Rambla',
+			'Rammetto One',
+			'Ranchers',
+			'Rancho',
+			'Ranga',
+			'Rationale',
+			'Ravi Prakash',
+			'Redressed',
+			'Reenie Beanie',
+			'Revalia',
+			'Rhodium Libre',
+			'Ribeye',
+			'Ribeye Marrow',
+			'Righteous',
+			'Risque',
+			'Roboto',
+			'Roboto Condensed',
+			'Roboto Mono',
+			'Roboto Slab',
+			'Rochester',
+			'Rock Salt',
+			'Rokkitt',
+			'Romanesco',
+			'Ropa Sans',
+			'Rosario',
+			'Rosarivo',
+			'Rouge Script',
+			'Rozha One',
+			'Rubik',
+			'Rubik Mono One',
+			'Rubik One',
+			'Ruda',
+			'Rufina',
+			'Ruge Boogie',
+			'Ruluko',
+			'Rum Raisin',
+			'Ruslan Display',
+			'Russo One',
+			'Ruthie',
+			'Rye',
+			'Sacramento',
+			'Sahitya',
+			'Sail',
+			'Salsa',
+			'Sanchez',
+			'Sancreek',
+			'Sansita One',
+			'Sarala',
+			'Sarina',
+			'Sarpanch',
+			'Satisfy',
+			'Scada',
+			'Scheherazade',
+			'Schoolbell',
+			'Seaweed Script',
+			'Sevillana',
+			'Seymour One',
+			'Shadows Into Light',
+			'Shadows Into Light Two',
+			'Shanti',
+			'Share',
+			'Share Tech',
+			'Share Tech Mono',
+			'Shojumaru',
+			'Short Stack',
+			'Siemreap',
+			'Sigmar One',
+			'Signika',
+			'Signika Negative',
+			'Simonetta',
+			'Sintony',
+			'Sirin Stencil',
+			'Six Caps',
+			'Skranji',
+			'Slabo 13px',
+			'Slabo 27px',
+			'Slackey',
+			'Smokum',
+			'Smythe',
+			'Sniglet',
+			'Snippet',
+			'Snowburst One',
+			'Sofadi One',
+			'Sofia',
+			'Sonsie One',
+			'Sorts Mill Goudy',
+			'Source Code Pro',
+			'Source Sans Pro',
+			'Source Serif Pro',
+			'Special Elite',
+			'Spicy Rice',
+			'Spinnaker',
+			'Spirax',
+			'Squada One',
+			'Sree Krushnadevaraya',
+			'Stalemate',
+			'Stalinist One',
+			'Stardos Stencil',
+			'Stint Ultra Condensed',
+			'Stint Ultra Expanded',
+			'Stoke',
+			'Strait',
+			'Sue Ellen Francisco',
+			'Sumana',
+			'Sunshiney',
+			'Supermercado One',
+			'Sura',
+			'Suranna',
+			'Suravaram',
+			'Suwannaphum',
+			'Swanky and Moo Moo',
+			'Syncopate',
+			'Tangerine',
+			'Taprom',
+			'Tauri',
+			'Teko',
+			'Telex',
+			'Tenali Ramakrishna',
+			'Tenor Sans',
+			'Text Me One',
+			'The Girl Next Door',
+			'Tienne',
+			'Tillana',
+			'Timmana',
+			'Tinos',
+			'Titan One',
+			'Titillium Web',
+			'Trade Winds',
+			'Trocchi',
+			'Trochut',
+			'Trykker',
+			'Tulpen One',
+			'Ubuntu',
+			'Ubuntu Condensed',
+			'Ubuntu Mono',
+			'Ultra',
+			'Uncial Antiqua',
+			'Underdog',
+			'Unica One',
+			'UnifrakturCook',
+			'UnifrakturMaguntia',
+			'Unkempt',
+			'Unlock',
+			'Unna',
+			'Vampiro One',
+			'Varela',
+			'Varela Round',
+			'Vast Shadow',
+			'Vesper Libre',
+			'Vibur',
+			'Vidaloka',
+			'Viga',
+			'Voces',
+			'Volkhov',
+			'Vollkorn',
+			'Voltaire',
+			'VT323',
+			'Waiting for the Sunrise',
+			'Wallpoet',
+			'Walter Turncoat',
+			'Warnes',
+			'Wellfleet',
+			'Wendy One',
+			'Wire One',
+			'Work Sans',
+			'Yanone Kaffeesatz',
+			'Yantramanav',
+			'Yellowtail',
+			'Yeseva One',
+			'Yesteryear',
+			'Zeyada'
+		);
+		foreach ($static_fonts as $font):
+			$fonts[$font] = $font;
+		endforeach;
+	endif;
+	
+	return $fonts;
+}
+
+function gusta_get_google_font_variants  ($selected_font) {
+	$apikey = get_option('options_gusta_google_api_key');
+	$googlefonts = gusta_get_google_fonts_api ();
+	if ($apikey && $googlefonts):
+		$googlefonts = gusta_get_google_fonts_api ();
+		$variants = array();
+		foreach ($googlefonts["items"] as $font):
+			if ($font["family"]==$selected_font):
+				foreach ($font["variants"] as $variant):
+					$variants[$variant] = $variant;
+				endforeach;
+				return $variants;
+			endif;
+		endforeach;
+	endif;
+	return false;
+}
+
+function gusta_get_google_font_subsets  ($selected_font) {
+	$apikey = get_option('options_gusta_google_api_key');
+	$googlefonts = gusta_get_google_fonts_api ();
+	if ($apikey && $googlefonts):
+		$subsets = array();
+		foreach ($googlefonts["items"] as $font):
+			if ($font["family"]==$selected_font):
+				foreach ($font["subsets"] as $subset):
+					$subsets[$subset] = $subset;
+				endforeach;
+				return $subsets;
+			endif;
+		endforeach;
+	endif;
+	return false;
+}
+
+function gusta_get_google_selected_fonts () {
+	$googlefonts = get_option('options_gusta_google_fonts');
+	if ($googlefonts):
+		foreach ($googlefonts as $font):
+			$key = $font;
+			$fonts[$key] = $font;
+		endforeach;
+		return $fonts;
+	endif;
+	return false;
+}
+
+function gusta_get_adobe_fonts_api () {
+	global $adobe_fonts_json;
+	if ($adobe_fonts_json!=""):
+		return $adobe_fonts_json;
+	else:
+		$typekit_id = get_option('options_gusta_adobe_typekit_kit_id');
+		if ($typekit_id):
+			$filename = "https://typekit.com/api/v1/json/kits/".$typekit_id."/published";
+			if (@file_get_contents($filename)):
+				$adobe_fonts_service = file_get_contents($filename);
+				$adobe_fonts_json = json_decode($adobe_fonts_service, true);
+				return $adobe_fonts_json;
+			endif;
+		endif;
+		return false;
+	endif;
+}
+
+/* Outputs an array of Adobe Typekit Fonts available according to the Typekit ID */
+function gusta_get_adobe_fonts () {
+	$typekit_id = get_option('options_gusta_adobe_typekit_kit_id');
+	$adobefonts = gusta_get_adobe_fonts_api ();
+	if ($typekit_id && $adobefonts):
+		$fonts = array();
+		foreach ($adobefonts["kit"]["families"] as $font):
+			$fonts[$font['slug']] = $font['name'];
+		endforeach;
+		return $fonts;
+	endif;
+	return false;
+}
+
+/* Outputs an array of safe Web Fonts */
+function gusta_get_safe_fonts () {
+	return array (
+		'Andale Mono'			=> 'Andale Mono',
+		'Arial' 				=> 'Arial',
+		'Arial Black' 			=> 'Arial Black',
+		'Arial Narrow' 			=> 'Arial Narrow',
+		'Arial Rounded MT Bold'	=> 'Arial Rounded MT Bold',
+		'Avant Garde' 			=> 'Avant Garde',
+		'Baskerville' 			=> 'Baskerville',
+		'Big Caslon' 			=> 'Big Caslon',
+		'Bodoni MT' 			=> 'Bodoni MT',
+		'Book Antiqua' 			=> 'Book Antiqua',
+		'Bookman' 				=> 'Bookman',
+		'Bookman Old Style' 	=> 'Bookman Old Style',
+		'Brush Script MT' 		=> 'Brush Script MT',
+		'Calibri' 				=> 'Calibri',
+		'Calisto MT' 			=> 'Calisto MT',
+		'Cambria' 				=> 'Cambria',
+		'Candara' 				=> 'Candara',
+		'Century Gothic' 		=> 'Century Gothic',
+		'Charcoal' 				=> 'Charcoal',
+		'Century Schoolbook' 	=> 'Century Schoolbook',
+		'Comic Sans MS' 		=> 'Comic Sans MS',
+		'Consolas' 				=> 'Consolas',
+		'Copperplate' 			=> 'Copperplate',
+		'Courier New' 			=> 'Courier New',
+		'Didot' 				=> 'Didot',
+		'Franklin Gothic Medium'=> 'Franklin Gothic Medium',
+		'Futura'				=> 'Futura',
+		'Gadget' 				=> 'Gadget',
+		'Garamond' 				=> 'Garamond',
+		'Geneva' 				=> 'Geneva',
+		'Georgia' 				=> 'Georgia',
+		'Gill Sans' 			=> 'Gill Sans',
+		'Goudy Old Style' 		=> 'Goudy Old Style',
+		'Helvetica' 			=> 'Helvetica',
+		'Helvetica Neue' 		=> 'Helvetica Neue',
+		'Helvetica Neue Light' 	=> 'Helvetica Neue Light',
+		'Hoefler Text' 			=> 'Hoefler Text',
+		'Impact' 				=> 'Impact',
+		'Lucida Bright' 		=> 'Lucida Bright',
+		'Lucida Console' 		=> 'Lucida Console',
+		'Lucida Grande' 		=> 'Lucida Grande',
+		'Lucida Sans Typewriter'=> 'Lucida Sans Typewriter',
+		'Lucida Sans Unicode' 	=> 'Lucida Sans Unicode',
+		'Monaco' 				=> 'Monaco',
+		'Optima' 				=> 'Optima',
+		'Palatino' 				=> 'Palatino',
+		'Palatino Linotype' 	=> 'Palatino Linotype',
+		'Papyrus' 				=> 'Papyrus',
+		'Perpetua' 				=> 'Perpetua',
+		'Rockwell' 				=> 'Rockwell',
+		'Rockwell Extra Bold' 	=> 'Rockwell Extra Bold',
+		'Segoe UI' 				=> 'Segoe UI',
+		'Tahoma' 				=> 'Tahoma',
+		'Times'					=> 'Times',
+		'Times New Roman'		=> 'Times New Roman',
+		'Trebuchet MS' 			=> 'Trebuchet MS',
+		'Verdana' 				=> 'Verdana',
+		'cursive' 				=> 'cursive',
+		'monospace' 			=> 'monospace',
+		'sans-serif' 			=> 'sans-serif',
+		'serif' 				=> 'serif',
+	);
+}
+
+/*
+
+
+Type Face Upload
+
+
+*/
+function gusta_my_web_fonts () {
+	if (get_option('options_gusta_add_new_font')): 
+		$j = $i = 0;
+		while ($j==0):
+			$font_name = get_option('options_gusta_add_new_font_'.$i.'_custom_font_name');
+			if ($font_name):
+				$font_name = str_replace(" ", "+", $font_name);
+				$woff = wp_get_attachment_url(get_option('options_gusta_add_new_font_'.$i.'_woff'));
+				$woff2 = wp_get_attachment_url(get_option('options_gusta_add_new_font_'.$i.'_woff2'));
+				$ttf = wp_get_attachment_url(get_option('options_gusta_add_new_font_'.$i.'_ttf'));
+				$svg = wp_get_attachment_url(get_option('options_gusta_add_new_font_'.$i.'_svg'));
+				$eot = wp_get_attachment_url(get_option('options_gusta_add_new_font_'.$i.'_eot'));
+		
+				return "@font-face { font-family: '".$font_name."'; src: url('".$eot."'); src: url('".$eot."?#iefix') format('embedded-opentype'), url('".$woff."') format('woff'), url('".$woff2."') format('woff2'), url('".$ttf."') format('truetype'), url('".$svg."#svg".$font_name."') format('svg'); }";
+				unset ($font_name);
+			else:
+				$j++;
+			endif;
+			$i++;
+		endwhile;
+	endif;
+}
+
+/* Outputs and array of the names of the uploaded Fonts */
+function gusta_my_web_fonts_dropdown () {
+	global $mywebfonts;
+	if (!$mywebfonts):
+		$j = $i = 0;
+		while ($j==0):
+			$font_name = get_option('options_gusta_add_new_font_'.$i.'_custom_font_name');
+			if ($font_name):
+				$font_slug = str_replace(" ", "+", $font_name);
+				$mywebfonts["'".$font_slug."'"] = $font_name;
+				unset ($font_name);
+			else:
+				$j++;
+			endif;
+			$i++;
+		endwhile;
+	endif;
+	return $mywebfonts;
+}
+?>

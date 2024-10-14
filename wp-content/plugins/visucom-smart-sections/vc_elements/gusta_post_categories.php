@@ -1,0 +1,176 @@
+<?php
+/*
+* Visual Composer Post Categories Element & Shortcode
+*
+* @file           vc_elements/gusta_post_categories.php
+* @package        Smart Sections
+* @author         Bora Demircan & Ali Metehan Erdem
+* @copyright      2018 Theme Gusta
+* @license        license.txt
+* @version        Release: 1.7.1
+*
+*/
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
+/*
+Element Description: Gusta Post Categories
+*/
+ 
+// Element HTML
+    function gusta_post_categories_html( $atts ) {
+		global $parent, $product;
+		$the_post = $parent;
+		if (isset($product)): if ($the_post==''): $the_post=get_post($product->get_id()); endif; endif;
+		if ($the_post==''): $the_post=get_queried_object(); endif;
+        $css = $el_class = $output = $the_permalink = $the_excerpt = ''; unset ($dynamic_css);
+		
+		$attributes = array(
+			'vc_id' => '',
+			'number_of_categories' => '1',
+			'separator' => ', ',
+			'label_text' => '',
+			'add_label_icon' => '',
+			'alignment' => 'left',
+			'display_inline' => '',
+			'mobile_display' => '',
+			'mobile_alignment' => '',
+			'mobile_display_inline' => '',
+			'visibility' => 'show-show',
+			'animation' => 'fade',
+			'add_link' => 'none',
+			'label_icon' => 'fontawesome',
+			'label_icon_fontawesome' => 'fa fa fa-folder-open',
+			'label_icon_openiconic' => 'vc-oi vc-oi-dial',
+			'label_icon_typicons' => 'typcn typcn-adjust-brightness',
+			'label_icon_entypo' => 'entypo-icon entypo-icon-note',
+			'label_icon_linecons' => 'vc_li vc_li-heart',
+			'label_icon_pixelicons' => 'vc_pixel_icon vc_pixel_icon-alert',
+			'label_icon_monosocial' => 'vc-mono vc-mono-fivehundredpx',
+			'label_icon_material' => 'vc-material vc-material-cake',
+			'el_class' => '',
+		);
+		$att = shortcode_atts($attributes, $atts, 'gusta_post_categories');
+		extract($att);
+		
+		if (isset($animation) && $animation!='none'):
+			$ani = ' ani-'.$animation.'';
+		endif;
+		
+		$output = $label = '';
+		
+		if (isset($add_label_icon) && $add_label_icon=='true'):
+			$label = '<i class="'.$att['label_icon_'.$label_icon].' label-icon"></i>';
+			vc_icon_element_fonts_enqueue( $label_icon );
+		endif;
+		if (isset($label_text) && $label_text!=''): $label .= '<span class="label-text">'.$label_text.'</span> '; endif;
+		
+		$cat_args = array();
+		
+		if (isset($number_of_categories) && $number_of_categories!=''):
+			$cat_args['number'] = $number_of_categories;
+		endif;
+		
+		$post_categories = array();
+		if ($the_post):
+			$post_categories = wp_get_post_categories( $the_post->ID, $cat_args );
+			$primary = gusta_get_post_primary_category($the_post->ID, 'category', true);
+			if (!empty($primary)):
+				$post_categories = array_merge(array($primary), array_diff($post_categories, array($primary)));
+				if ($number_of_categories<count($post_categories)):
+					$remove_last = array_pop($post_categories);
+				endif;
+			endif;
+		endif;
+		
+		$i=0;
+		
+		$mobile_disp = gusta_mobile_display($att);
+		
+		$output .= '<div class="gusta-post-meta gusta-align-'.$alignment.' '.$display_inline.$mobile_disp.'">';
+		$output .= '<p class="'.$vc_id.' '.$el_class.' '.$visibility.' '.$ani.' ss-element gusta-post-categories">';
+		
+		if ($label!=''):
+			$output .= '<span class="gusta-label">'.$label.'</span>';
+		endif;
+		$cnt_cat = count($post_categories)-1;
+		foreach($post_categories as $c){
+			$cat = get_category( $c );
+			$link_class='';
+			if (isset($add_link) && $add_link != 'none'):
+				$the_permalink = get_category_link( $cat->term_id );
+				$linked = '<a'.$link_class.' href="'.$the_permalink.'">'.$cat->name.'</a>';
+			else:
+				$linked = '<span>'.$cat->name.'</span>';
+			endif;
+			
+			$output .= '<span class="ss-element-item gusta-cat-'.$cat->term_id.'">'.$linked.'</span>';
+			if ($i<$cnt_cat): $output .= $separator; endif;
+			$i++;
+		}
+		
+		$output .= '</p></div>'.gusta_clear($att);
+		
+		return $output;
+        
+    }
+    
+    add_shortcode( 'gusta_post_categories', 'gusta_post_categories_html' );
+
+		$params = array (
+			gusta_vc_id('categories'),
+			array(
+				'type' => 'textfield',
+				'heading' => __( 'Max. # of Categories', 'mb_framework' ),
+				'description' => __( 'Enter the maximum number of categories to display.', 'mb_framework' ),
+				'param_name' => 'number_of_categories',
+				'admin_label' => false,
+				'std' => '1'
+			),
+			array(
+				'type' => 'textfield',
+				'heading' => __( 'Separator', 'mb_framework' ),
+				'param_name' => 'separator',
+				'admin_label' => false,
+				'std' => ', '
+			),
+		);
+		
+		$params = gusta_label($params, 'fa fa-folder-open');
+		$params = gusta_element_display($params);
+		$params = gusta_visibility_hover_animation($params);
+		$params[] = array(
+			'type' => 'dropdown',
+			'heading' => __( 'Add Link', 'mb_framework' ),
+			'param_name' => 'add_link',
+			'admin_label' => true,
+			'value' => array(
+				__('None', 'mb_framework')   => 'none',
+				__('Category Link', 'mb_framework')   => 'category',
+			),
+			'std' => 'none'
+		);
+		$params[] = gusta_vc_extra_class_name();
+
+		$params = gusta_styles_tab ( $params, array ( 
+			array (	'sub_group' => __( 'Label Text', 'mb_framework' ), 'el_slug' => 'label_text', 'dependency' => 0, 'enable_hover' => 1, 'enable_active' => 0, 'enable_box' => 1, 'enable_text' => 1 ),
+			array (	'sub_group' => __( 'Category Item', 'mb_framework' ), 'el_slug' => 'category_item', 'dependency' => 0, 'enable_hover' => 1, 'enable_active' => 0, 'enable_box' => 1, 'enable_text' => 1 ),
+		));
+
+		// Map the block with vc_map()
+		vc_map( 
+			array(
+				"name" => __("Post Categories", "mb_framework"), // add a name
+				"base" => "gusta_post_categories", // bind with our shortcode
+				"content_element" => true, // set this parameter when element will has a content
+				"is_container" => false, // set this param when you need to add a content element in this element
+				'admin_enqueue_css' => array( SMART_SECTIONS_PLUGIN_URL . '/assets/admin/css/vc_style.css' ),
+				"category" => __('Smart Sections', 'mb_framework'),
+				"params" => $params
+			)
+		);
+
+
+unset($params);
