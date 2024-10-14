@@ -1,0 +1,11 @@
+
+---Downloaded files---
+The import files for: Post Listing Demo 10 were successfully downloaded!
+Initial max execution time = 60
+Files info:
+Site URL = https://thebullysupply.com
+Data file = /home/hailogic/thebullysupply.com/wp-content/uploads/2024/07/demo-content-import-file_2024-07-24__19-30-19.xml
+Widget file = not defined!
+Customizer file = not defined!
+Redux files:
+not defined!
