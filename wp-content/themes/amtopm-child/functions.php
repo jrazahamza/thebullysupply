@@ -418,8 +418,9 @@ function promotedBanner_func2() {
     include ('connection.php');
     $i=0;
     $html='<div class="bannerSliders">';
-        $bannerPromotions=mysqli_query($con,"SELECT * FROM `bannerPromotion` where `position`='Home Bottom' and `status`='1' order by id desc ");      
-        $bannerPromotion = mysqli_fetch_array($bannerPromotions);
+        $bannerPromotions=mysqli_query($con,"SELECT * FROM `bannerPromotion` where `position`='Home Bottom' and `status`='1' order by id desc ");
+        if (mysqli_num_rows($bannerPromotions) > 0) {      
+            $bannerPromotion = mysqli_fetch_array($bannerPromotions);
             
             // $start_datetime = new DateTime($bannerPromotion['startDate']);
             // $end_datetime = new DateTime($bannerPromotion['endDate']);
@@ -446,6 +447,7 @@ function promotedBanner_func2() {
             //     $i++;
             // }
        
+    }
     $html.='</div>';
     return $html;
 }

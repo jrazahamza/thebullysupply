@@ -147,9 +147,11 @@ get_header();
                             $categoriesList=explode(',',$listing['category']);
                             for($z=0;$z<count($categoriesList);$z++){
                                 $categories=mysqli_query($con,"SELECT * FROM `categories` where `id`=".$categoriesList[$z]." ");      
-                                $category = mysqli_fetch_array($categories);
-                                if($category['id']){
-                                    array_push($categoriesNames,$category['name']);
+                                if (mysqli_num_rows($categories) > 0) {
+                                    $category = mysqli_fetch_array($categories);
+                                    if($category['id']){
+                                        array_push($categoriesNames,$category['name']);
+                                    }
                                 }
                             }
                         }
