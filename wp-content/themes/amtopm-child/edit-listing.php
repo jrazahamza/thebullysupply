@@ -19,13 +19,18 @@ if(!isset($editListing['id'])){
 if(isset($_POST['submit'])){
  
     $titleProduct=$_POST['titleProduct']?$_POST['titleProduct']:'';
-    $typeProduct=$_POST['typeProduct']?$_POST['typeProduct']:'';
-    $categories=$_POST['categories']?implode(",",$_POST['categories']):'';
+//     $typeProduct=$_POST['typeProduct']?$_POST['typeProduct']:'';
+	$category_level=$_POST['category_level']?$_POST['category_level']:'';
+    $category_id=$_POST['category_id']?$_POST['category_id']:'';
+	$gender=$_POST['gender']?$_POST['gender']:'';
+	$age=$_POST['age']?$_POST['age']:'';
     $description=$_POST['description']?$_POST['description']:'';
     $price=$_POST['price']?$_POST['price']:'';
     $quantity=$_POST['quantity']?$_POST['quantity']:'';
     $stock=$_POST['stock']?$_POST['stock']:'';
     $weight=$_POST['weight']?$_POST['weight']:'';
+	$state=$_POST['state']?$_POST['state']:'';
+	$city=$_POST['city']?$_POST['city']:'';
     $expireAt=$_POST['expireAt']?$_POST['expireAt']:'';
     $sku=$_POST['sku']?$_POST['sku']:'';
     
@@ -95,8 +100,8 @@ if(isset($_POST['submit'])){
         }
     }
      
-    $update=mysqli_query($con," UPDATE `listings` SET `title`='".$titleProduct."',`type`='".$typeProduct."',`category`='".$categories."',`descriptions`='".$description."',`price`='".$price."',
-    `quantity`='".$quantity."',`stock`='".$stock."',`stockNumber`='".$sku."',`weight`='".$weight."',`end_at`='".$expireAt."' WHERE `id`='".$_GET['id']."' ");
+    $update=mysqli_query($con," UPDATE `listings` SET `title`='".$titleProduct."',`category_level`='".$category_level."',`category`='".$category_id."',`gender`='".$gender."',`age`='".$age."',`descriptions`='".$description."',`price`='".$price."',
+    `quantity`='".$quantity."',`stock`='".$stock."',`stockNumber`='".$sku."',`weight`='".$weight."',`state`='".$state."',`city`='".$city."', `end_at`='".$expireAt."' WHERE `id`='".$_GET['id']."' ");
     
     if($update){
         header("location: /my-shop/");
@@ -138,40 +143,62 @@ get_header();
                                               <input type="text" id="StoreName" name="titleProduct" value="<?php echo $editListing['title']; ?>" placeholder="The Bully Supply" required maxlength="50"/>
                                               <label class="template-label-bottom">Max 50 characters</label>
                                             </div>
-                                            <div class="flex-block-item flex-block-item02">
-                                                  <label class="template-label" for="TitleProduct">Type of your Product</label>
-                                                  <select name="typeProduct" required>
-                                                      <option value="">Select Option</option>
-                                                      <?php
-                                                            $types=mysqli_query($con,"SELECT * FROM `types` where `status`='1' ");      
-                                                            while($type = mysqli_fetch_array($types)){
-                                                      ?>
-                                                      <option <?php if($type['id']==$editListing['type']){ echo "selected"; } ?> value="<?php echo $type['id']; ?>"><?php echo $type['name']; ?></option>
-                                                      <?php } ?>
-                                                  </select>
-                                                  <label class="template-label-bottom">Max 50 characters</label>
-                                            </div>
+                                           	<div class="flex-block-item flex-block-item02">
+												<label class="template-label" for="Category Level">Category</label>
+												<select id="top_category" name="category_level" style="width: 100%;">
+													<option value="">Select Parent Category</option>
+													<?php
+													global $wpdb;
+													$categories = $wpdb->get_results("SELECT id, name FROM `categories` WHERE category_level = 1");
+
+													if (!empty($categories)) {
+														foreach ($categories as $category) { ?>
+															<option value="<?php echo esc_attr($category->id); ?>" <?php echo ($editListing['category_level'] == $category->id) ? 'selected' : ''; ?>>
+																<?php echo esc_html($category->name); ?>
+															</option>
+														<?php }
+													}
+													?>
+												</select>
+											</div>
+											
+											<div id="categoryDropdownsWrapper"></div>
+
+											<!-- Hidden input to store the selected category ID from the database (set this value dynamically) -->
+											<input type="hidden" id="selectedCategoryId" value="<?php echo esc_attr($storedCategoryId); ?>" />
+											
+											
                                             <div class="flex-block-item flex-block-item03">
                                                   <h5>Category</h5>
                                                   <p>Please click the arrow to expand the category and select the sub category in which your product matches. This will be helpful for the customers to reach your product easily</p>
-                                                  <div class="form-checkbox">
-                                                      <ul>
-                                                        <?php
-                                                            $categories=mysqli_query($con,"SELECT * FROM `categories` where `status`='1' ");      
-                                                            while($category = mysqli_fetch_array($categories)){
-                                                                $listingCount=0;
-                                                                $listings=mysqli_query($con,"SELECT * FROM `listings` ");      
-                                                                while($listing = mysqli_fetch_array($listings)){
-                                                                    $listingArray=explode(",",$listing['category']);
-                                                                    if(in_array($category['id'], $listingArray)){
-                                                                        $listingCount++;
-                                                                    }
-                                                                }
-                                                        ?>
-                                                        <li><span class="form-check-box"><input type="checkbox" id="categories" <?php if(in_array($category['id'], explode(",",$editListing['category']))){ echo "checked"; } ?> name="categories[]" value="<?php echo $category['id']; ?>" class="check-box-class"/></span><label for="categories" class="inner-form-check-box-label"><?php echo $category['name']; ?>(<?php echo $listingCount; ?>)</label></li>
-                                                        <?php } ?>
-                                                      </ul>
-                                                    </div>
+                                                  
+					<p id="parentCategoryWrapper2">
+						<label>Parent Category</label>
+						<select name="category_id" id="parentCategory2" style="width: 100%;">
+							<option value="">Select Category</option>
+							<?php
+							// Fetch the parent category details based on the category ID from the listing
+							$parent_categories = $wpdb->get_results("SELECT * FROM `categories` WHERE id = " . intval($editListing['category']));
+
+							if ($parent_categories) {
+								foreach ($parent_categories as $parent) {
+									// Fetch child categories based on the parent ID
+							$child_categories = $wpdb->get_results("SELECT * FROM `categories` WHERE parent_id = " . intval($parent->parent_id));
+
+									if ($child_categories) { ?>
+										<?php foreach ($child_categories as $child) { ?>
+										<option value="<?php echo $child->id; ?>" 
+												<?php echo ($editListing['category'] == $child->id) ? 'selected' : ''; ?>>
+											<?php echo $child->name; ?>
+										</option>
+										<?php } ?>
+									<?php }
+								}
+							}
+							?>
+						</select>
+					</p>
+												
                                                     <div class="Description-class">
                                                         <label class="template-label">Description</label>
                                                         <textarea name="description" required placeholder="Welcome to our premier dog emporium, where tails wag and hearts melt! Step into a world of canine delight at our dog store, where we cater to every breed, size, and personality. Our store is a haven for all things dog-related, curated with care to ensure your furry friend receives only the best."><?php echo $editListing['descriptions']; ?></textarea>
@@ -188,10 +215,24 @@ get_header();
                                 <div class="create-listing-block-item-right-side-content">
                                     <h3>The Logistics</h3>
                                     <p>Product price, weight, quantity</p>
+									
+										<div class="flex-block-item flex-block-item01">
+											 <label class="template-label">Gender</label>
+											 <select id="top_category" name="gender" style="width: 100%;" required>
+												 <option value="">Select Gender</option>
+												 <option value="1" <?php echo ($editListing['gender'] == 1) ? 'selected' : ''; ?>>Male</option>
+												 <option value="2" <?php echo ($editListing['gender'] == 2) ? 'selected' : ''; ?>>Female</option>
+											 </select>
+										</div>
+
+										<div class="flex-block-item flex-block-item02">
+											<label class="template-label">Age</label>
+											<input type="text" id="age" name="age" placeholder="Enter Age" maxlength="2" value="<?php echo $editListing['age']; ?>" required/>
+										</div>
                                     
                                          <div class="flex-block flex-block02">
                                              
-                                            <div class="flex-block-item flex-block-item01">
+                                            <div class="flex-block-item flex-block-item02">
                                               <label class="template-label" for="price">Price</label>
                                                <p>Please enter only number with maximum 2 decimal places. Kindly dont use comma or dollar symbol. Eg. 4200 or 50.25.</p>
                                                <div class="width-class">
@@ -199,14 +240,14 @@ get_header();
                                                </div>
                                               <label class="template-label-bottom">Must be in <strong>USD</strong></label>
                                             </div>
-                                            <div class="flex-block-item flex-block-item02">   
+                                            <div class="flex-block-item flex-block-item03">   
                                                 <div class="inner-form-flex-block">
                                                     <div class="inner-form-flex-block-item inner-form-flex-block-item01">
                                                         <label class="template-label" for="quantity">Quantity</label>
                                                         <input type="number" id="quantity" name="quantity" value="<?php echo $editListing['quantity']; ?>" required />
                                                     </div>
                                                     
-                                                    <div class="inner-form-flex-block-item inner-form-flex-block-item02">
+                                                    <div class="inner-form-flex-block-item inner-form-flex-block-item04">
                                                         <select name="stock" required>
                                                               <option value="" selected disabled>Select Option</option>
                                                               <option <?php if($editListing['stock']=='Instock'){ echo "selected"; } ?> value="Instock">Instock</option>
@@ -215,7 +256,7 @@ get_header();
                                                     </div>
                                                     
                                                 </div>
-                                                <div class="flex-block-item flex-block-item03">
+                                                <div class="flex-block-item flex-block-item04">
                                                   <label class="template-label" for="weight">Weight</label>
                                                   <p>Please enter only unit weight. Dont type lbs in the box.</p>
                                                   <input type="number" id="weight" name="weight" value="<?php echo $editListing['weight']; ?>" required />
@@ -225,7 +266,7 @@ get_header();
                                                   <label class="template-label" for="sku">SKU</label>
                                                   <input type="text" id="sku" name="sku" value="<?php echo $editListing['stockNumber']; ?>" required />
                                                 </div>
-                                                <div class="flex-block-item flex-block-item03">
+                                                <div class="flex-block-item flex-block-item05">
                                                   <label class="template-label" for="expireAt">Expire At</label>
                                                   <input type="date" id="expireAt" name="expireAt" value="<?php echo $editListing['end_at']; ?>" required />
                                                 </div>
@@ -233,9 +274,87 @@ get_header();
 
                                       </div>
                                 </div>
-                            </div>   
+                            </div>
+							
+							
+							<div class="create-listing-block-item create-listing-block-item02 same-width-class">
+                                <div class="create-listing-block-item-left-side-content">
+                                    <h1>3</h1>
+                                    <h4>Location</h4>
+                                </div> 
+                                <div class="create-listing-block-item-right-side-content">
+                                    <h3>The Locations</h3>
+                                    <p>Select Location</p>
+                                    
+									<div class="flex-block flex-block02">
+										<div class="flex-block-item flex-block-item01">
+											<label class="template-label">State</label>
+											<select id="state" name="state" style="width: 100%;" required>
+												<option value="">Select State</option>
+												<option value="AL" <?php if($editListing['state']=='AL'){ echo "selected"; } ?>>AL</option> 
+												<option value="AK" <?php if($editListing['state']=='AK'){ echo "selected"; } ?>>AK</option>
+												<option value="AZ" <?php if($editListing['state']=='AZ'){ echo "selected"; } ?>>AZ</option> 
+												<option value="AR" <?php if($editListing['state']=='AR'){ echo "selected"; } ?>>AR</option>
+												<option value="CA" <?php if($editListing['state']=='CA'){ echo "selected"; } ?>>CA</option> 
+												<option value="CO" <?php if($editListing['state']=='CO'){ echo "selected"; } ?>>CO</option>
+												<option value="CT" <?php if($editListing['state']=='CT'){ echo "selected"; } ?>>CT</option> 
+												<option value="DE" <?php if($editListing['state']=='DE'){ echo "selected"; } ?>>DE</option>
+												<option value="FL" <?php if($editListing['state']=='FL'){ echo "selected"; } ?>>FL</option> 
+												<option value="GA" <?php if($editListing['state']=='GA'){ echo "selected"; } ?>>GA</option>
+												<option value="HI" <?php if($editListing['state']=='HI'){ echo "selected"; } ?>>HI</option> 
+												<option value="ID" <?php if($editListing['state']=='ID'){ echo "selected"; } ?>>ID</option>
+												<option value="IL" <?php if($editListing['state']=='IL'){ echo "selected"; } ?>>IL</option> 
+												<option value="IN" <?php if($editListing['state']=='IN'){ echo "selected"; } ?>>IN</option>
+												<option value="IA" <?php if($editListing['state']=='IA'){ echo "selected"; } ?>>IA</option> 
+												<option value="KS" <?php if($editListing['state']=='KS'){ echo "selected"; } ?>>KS</option>
+												<option value="KY" <?php if($editListing['state']=='KY'){ echo "selected"; } ?>>KY</option> 
+												<option value="LA" <?php if($editListing['state']=='LA'){ echo "selected"; } ?>>LA</option>
+												<option value="ME" <?php if($editListing['state']=='ME'){ echo "selected"; } ?>>ME</option> 
+												<option value="MD" <?php if($editListing['state']=='MD'){ echo "selected"; } ?>>MD</option>														<option value="MA" <?php if($editListing['state']=='MA'){ echo "selected"; } ?>>MA</option> 
+												<option value="MI" <?php if($editListing['state']=='MI'){ echo "selected"; } ?>>MI</option>														<option value="MN" <?php if($editListing['state']=='MN'){ echo "selected"; } ?>>MN</option> 
+												<option value="MS" <?php if($editListing['state']=='MS'){ echo "selected"; } ?>>MS</option>														<option value="MO" <?php if($editListing['state']=='MO'){ echo "selected"; } ?>>MO</option> 
+												<option value="MT" <?php if($editListing['state']=='MT'){ echo "selected"; } ?>>MT</option>
+												<option value="NE" <?php if($editListing['state']=='NE'){ echo "selected"; } ?>>NE</option> 
+												<option value="NV" <?php if($editListing['state']=='NV'){ echo "selected"; } ?>>NV</option>
+												<option value="NH" <?php if($editListing['state']=='NH'){ echo "selected"; } ?>>NH</option> 
+												<option value="NJ" <?php if($editListing['state']=='NJ'){ echo "selected"; } ?>>NJ</option>
+												<option value="NM" <?php if($editListing['state']=='NM'){ echo "selected"; } ?>>NM</option> 
+												<option value="NY" <?php if($editListing['state']=='NY'){ echo "selected"; } ?>>NY</option>
+												<option value="NC" <?php if($editListing['state']=='NC'){ echo "selected"; } ?>>NC</option> 
+												<option value="ND" <?php if($editListing['state']=='ND'){ echo "selected"; } ?>>ND</option>
+												<option value="OH" <?php if($editListing['state']=='OH'){ echo "selected"; } ?>>OH</option> 
+												<option value="OK" <?php if($editListing['state']=='OK'){ echo "selected"; } ?>>OK</option>
+												<option value="OR" <?php if($editListing['state']=='OR'){ echo "selected"; } ?>>OR</option> 
+												<option value="PA" <?php if($editListing['state']=='PA'){ echo "selected"; } ?>>PA</option>
+												<option value="RI" <?php if($editListing['state']=='RI'){ echo "selected"; } ?>>RI</option> 
+												<option value="SC" <?php if($editListing['state']=='SC'){ echo "selected"; } ?>>SC</option>
+												<option value="SD" <?php if($editListing['state']=='SD'){ echo "selected"; } ?>>SD</option> 
+												<option value="TN" <?php if($editListing['state']=='TN'){ echo "selected"; } ?>>TN</option>
+												<option value="TX" <?php if($editListing['state']=='TX'){ echo "selected"; } ?>>TX</option> 
+												<option value="UT" <?php if($editListing['state']=='UT'){ echo "selected"; } ?>>UT</option>														<option value="VT" <?php if($editListing['state']=='VT'){ echo "selected"; } ?>>VT</option> 
+												<option value="VA" <?php if($editListing['state']=='VA'){ echo "selected"; } ?>>VA</option>
+												<option value="WA" <?php if($editListing['state']=='WA'){ echo "selected"; } ?>>WA</option> 
+												<option value="WV" <?php if($editListing['state']=='WV'){ echo "selected"; } ?>>WV</option>
+												<option value="WI" <?php if($editListing['state']=='WI'){ echo "selected"; } ?>>WI</option> 
+												<option value="WY" <?php if($editListing['state']=='WY'){ echo "selected"; } ?>>WY</option>														<option value="DC" <?php if($editListing['state']=='DC'){ echo "selected"; } ?>>DC</option> 
+												<option value="AS" <?php if($editListing['state']=='AS'){ echo "selected"; } ?>>AS</option>
+												<option value="GU" <?php if($editListing['state']=='GU'){ echo "selected"; } ?>>GU</option> 
+												<option value="MP" <?php if($editListing['state']=='MP'){ echo "selected"; } ?>>MP</option>
+												<option value="PR" <?php if($editListing['state']=='PR'){ echo "selected"; } ?>>PR</option> 
+												<option value="VI" <?php if($editListing['state']=='VI'){ echo "selected"; } ?>>VI</option>
+											</select>
+										</div>
+
+											 <div class="flex-block-item flex-block-item02">
+												 <label class="template-label">City</label>
+												 <input type="text" id="city" name="city" placeholder="Enter City" value="<?php echo $editListing['city']; ?>" required/>
+											 </div>
+                                      </div>
+                                </div>
+                            </div>
+							
                             
-                            <div class="create-listing-block-item create-listing-block-item03 same-width-class">
+                            <div class="create-listing-block-item create-listing-block-item06 same-width-class">
                                 <div class="create-listing-block-item-left-side-content">
                                     <h1>3</h1>
                                     <h4>The Gallery</h4>
@@ -309,6 +428,108 @@ get_header();
         </div>
     </div>
 </section>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>	
+jQuery(document).ready(function($) {
+    var categoryDropdownsWrapper = $('#categoryDropdownsWrapper');
+    var selectedCategoryId = $('#selectedCategoryId').val(); // Ensure this element exists and has the correct value
+
+    // Load the hierarchy on page load if there's a selected category ID
+    if (selectedCategoryId) {
+        loadCategoryHierarchy(selectedCategoryId);
+    }
+
+    $('#top_category').on('change', function() {
+        var topCategory = $(this).val();
+        categoryDropdownsWrapper.empty(); // Clear existing dropdowns
+
+        if (topCategory) {
+            createDropdown(topCategory);
+        }
+    });
+
+    function loadCategoryHierarchy(selectedId) {
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'get_category_hierarchy',
+                category_id: selectedId
+            },
+            success: function(response) {
+                if (response.length > 0) {
+                    var parentId = null;
+                    response.forEach(function(category, index) {
+                        if (index === 0) {
+                            $('#top_category').val(category.id).trigger('change');
+                            parentId = category.id;
+                        } else {
+                            createDropdown(parentId, category.id);
+                            parentId = category.id;
+                        }
+                    });
+                }
+            },
+            error: function(error) {
+                console.error('Error loading category hierarchy:', error);
+            }
+        });
+    }
+
+    function createDropdown(parentId, selectedId = null) {
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'get_categories_by_child',
+                parent_id: parentId
+            },
+            success: function(response) {
+                if (response.length > 0) {
+                    var label = $('<label></label>').addClass('template-label').text(parentId === 0 ? 'Top Level Category' : 'Child Categories');
+                    var dropdown = $('<select name="category_id"></select>').addClass('dynamic-category-dropdown').css('width', '100%');
+                    dropdown.append('<option value="">Select Category</option>');
+
+                    $.each(response, function(index, category) {
+                        var isSelected = (selectedId && selectedId == category.id) ? 'selected' : '';
+                        dropdown.append('<option value="' + category.id + '" ' + isSelected + '>' + category.name + '</option>');
+                    });
+
+                    categoryDropdownsWrapper.append(label);
+                    categoryDropdownsWrapper.append(dropdown);
+
+                    dropdown.on('change', function() {
+                        var selectedId = $(this).val();
+                        $(this).nextAll('.dynamic-category-dropdown').remove();
+
+                        if (selectedId) {
+                            createDropdown(selectedId);
+                        }
+                    });
+
+                    if (selectedId) {
+                        dropdown.trigger('change');
+                    }
+                } else {
+                    console.log('No child categories available for the selected parent');
+                }
+            },
+            error: function(error) {
+                console.error('Error fetching categories:', error);
+            }
+        });
+    }
+});
+	
+</script>
+
 <?php
 get_footer();
 ?>

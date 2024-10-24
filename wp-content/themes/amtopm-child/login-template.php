@@ -46,7 +46,88 @@ if(isset($_POST['submit'])){
 get_header(); 
 ?>
 
-<section class="loginForm ruk-login-bg">
+
+<section class="ruk-register-form">
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+			
+			<!-- Modal Popup for Register Form -->
+            <div class="container" id="signup-container" style="display: none;">
+                <div class="logo">
+                    <img src="/wp-content/uploads/2024/10/thepully-logo.png" alt="The Bally Supply Logo">
+                </div>
+                <h2>Register</h2>
+                <p class="description">Ready to become part of the exclusive club? Fill in the details below, and let the journey begin!</p>
+                
+                <form name="signup" class="register-form" action="" method="post">
+                    <div class="form-group">
+                        <input type="text" id="fullname" name="fullname" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+                        <span class="toggle-password" onclick="togglePassword('confirm-password')">👁️</span>
+                    </div>
+                    <button type="submit" name="signup" class="btn">Sign Up</button>
+                </form>
+
+                <div class="or-divider">or</div>
+
+                <div class="social-buttons">
+                    <button class="social-btn google"><img src="/wp-content/uploads/2024/10/google-icon.png" alt="google"/></button>
+                    <button class="social-btn facebook"><img src="/wp-content/uploads/2024/10/facebook-icon.png" alt="facebook"/></button>
+                    <button class="social-btn apple"><img src="/wp-content/uploads/2024/10/app-icon.png" alt="apple"/></button>
+                </div>
+
+                <p class="footer-text">
+                    Already have an account? <a href="#" id="show-login">Sign in</a>
+                </p>
+            </div>
+			
+			
+			<div class="container" id="login-container">
+                <div class="logo">
+                    <img src="/wp-content/uploads/2024/10/thepully-logo.png" alt="The Bally Supply Logo">
+                </div>
+                <h2>Login</h2>
+                <p class="description">Ready to become part of the exclusive club? Fill in the details below, and let the journey begin!</p>
+                
+                <form name="login" method="post" class="formValidationQuery">
+                    <div class="form-group">
+                        <input type="email" id="youremail" name="youremail" placeholder="Email Address" value="<?php if(isset($_COOKIE["youremail"])) { echo $_COOKIE["youremail"]; } ?>" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" value="<?php if(isset($_COOKIE["password"])) { echo $_COOKIE["password"]; } ?>" required />
+                        <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                    <button type="submit" name="login" class="btn">Sign In</button>
+                </form>
+
+                <div class="or-divider">or</div>
+
+                <div class="social-buttons">
+                    <button class="social-btn google"><img src="/wp-content/uploads/2024/10/google-icon.png" alt="google"/></button>
+                    <button class="social-btn facebook"><img src="/wp-content/uploads/2024/10/facebook-icon.png" alt="facebook"/></button>
+                    <button class="social-btn apple"><img src="/wp-content/uploads/2024/10/app-icon.png" alt="apple"/></button>
+                </div>
+
+                <p class="footer-text">
+                    Already have an account? <a href="#" id="show-signup">Sign Up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- <section class="loginForm ruk-login-bg">
         <div class="row login-content">
 			<div class="col-md-4 login-left">
 				<a href="https://thebullysupply.com/"><img src="https://thebullysupply.com/wp-content/uploads/2024/09/Group-1.png"></a>
@@ -98,6 +179,61 @@ get_header();
 				
 			</div>
         </div>
-    </section>
+    </section> -->
  
 <?php get_footer(); ?>
+
+<script>
+	
+document.getElementById('signup-container').style.display = 'none';
+document.getElementById('login-container').style.display = 'block';
+
+document.getElementById('show-login').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('signup-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'block';
+});
+
+document.getElementById('show-signup').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('signup-container').style.display = 'block';
+});
+
+	
+
+// Function to toggle password visibility
+function togglePassword(fieldId) {
+    var input = document.getElementById(fieldId);
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+}
+
+// Modal functionality
+const modal = document.getElementById("register-modal");
+const openModal = document.getElementById("open-modal");
+const closeModal = document.querySelector(".close");
+
+// Open the modal when 'Register' link is clicked
+openModal.addEventListener("click", function(e) {
+    e.preventDefault();
+	console.log('open modal');
+    modal.style.display = "flex";  // Show modal as flex
+});
+
+// Close the modal when 'x' is clicked
+closeModal.addEventListener("click", function() {
+    modal.style.display = "none";
+});
+
+// Close the modal if clicking outside the content area
+window.addEventListener("click", function(e) {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+});	
+	
+</script>

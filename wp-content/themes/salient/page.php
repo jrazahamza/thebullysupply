@@ -17,7 +17,7 @@ $nectar_fp_options = nectar_get_full_page_options();
 
 ?>
 <div class="container-wrap">
-	<div class="<?php if ( $nectar_fp_options['page_full_screen_rows'] !== 'on' ) { echo 'container'; } ?> main-content" role="main">
+	<div class="<?php if ( $nectar_fp_options['page_full_screen_rows'] !== 'on' ) { echo 'container-ruk2'; } ?> main-content" role="main">
 		<div class="<?php echo apply_filters('nectar_main_container_row_class_name', 'row'); ?>">
 			<?php
 

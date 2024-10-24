@@ -110,28 +110,18 @@ get_header();
                     <td>#<?php echo $listing['stockNumber']; ?></td>
                 </tr>
                 <tr>
-                    <td>Type:</td>
-                    <td>
-                        <?php
-                            $types=mysqli_query($con,"SELECT * FROM `types` where `id`=".$listing['type']." ");      
-                            $type = mysqli_fetch_array($types);
-                            if(isset($type['id'])){ echo $type['name']; }
-                        ?>
-                    </td>
-                </tr>
-                <tr>
                     <td>Category:</td>
-                    <td>
+                     <td>
                         <?php
                             $showCategories=array();
                             $categoryListing=explode(",",$listing['category']);
-                            $categories=mysqli_query($con,"SELECT * FROM `categories` ");      
+                            $categories=mysqli_query($con,"SELECT * FROM categories ");      
                             while($category = mysqli_fetch_array($categories)){
                                 if(in_array($category['id'], $categoryListing)){ 
                                     array_push($showCategories,$category['name']);
                                 }
                             }
-                            echo implode(", ",$showCategories);
+                            echo isset($showCategories) ? implode(", ",$showCategories) : '--';
                         ?>
                     </td>
                 </tr>
