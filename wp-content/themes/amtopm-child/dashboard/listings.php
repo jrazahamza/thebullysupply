@@ -5,7 +5,7 @@ if(isset($_POST['submit'])){
     $id=$_POST['id'];
     $titleProduct=$_POST['titleProduct']?$_POST['titleProduct']:'';
     $typeProduct=$_POST['typeProduct']?$_POST['typeProduct']:'';
-    $categories=$_POST['categories']?implode(",",$_POST['categories']):'';
+//     $categories=$_POST['categories']?implode(",",$_POST['categories']):'';
     $description=$_POST['description']?$_POST['description']:'';
     $price=$_POST['price']?$_POST['price']:'';
     $quantity=$_POST['quantity']?$_POST['quantity']:'';
@@ -87,7 +87,7 @@ if(isset($_POST['submit'])){
         }
     }
      
-    $query = " UPDATE `listings` SET `title`='".$titleProduct."',`type`='".$typeProduct."',`category`='".$categories."',`descriptions`='".$description."',`price`='".$price."',
+    $query = " UPDATE `listings` SET `title`='".$titleProduct."',`descriptions`='".$description."',`price`='".$price."',
     `quantity`='".$quantity."',`stock`='".$stock."',`stockNumber`='".$sku."',`weight`='".$weight."',`end_at`='".$expireAt."', `status`='".$status."' WHERE `id`='".$id."' ";
     $wpdb->query($query);
 }
@@ -190,7 +190,7 @@ if(isset($_GET['list-delete'])){
                               <input type="text" id="StoreName" name="titleProduct" value="<?php echo $listing->title; ?>" placeholder="The Bully Supply" required maxlength="50"/>
                               <label class="template-label-bottom">Max 50 characters</label>
                             </div>
-                            <div class="flex-block-item flex-block-item02">
+<!--                             <div class="flex-block-item flex-block-item02">
                                   <label class="template-label" for="TitleProduct">Type of your Product</label>
                                   <select name="typeProduct" required>
                                       <option value="">Select Option</option>
@@ -202,11 +202,11 @@ if(isset($_GET['list-delete'])){
                                       <?php } ?>
                                   </select>
                                   <label class="template-label-bottom">Max 50 characters</label>
-                            </div>
+                            </div> -->
                             <div class="flex-block-item flex-block-item03">
                                   <h5>Category</h5>
                                   <p>Please click the arrow to expand the category and select the sub category in which your product matches. This will be helpful for the customers to reach your product easily</p>
-                                  <div class="form-checkbox">
+<!--                                   <div class="form-checkbox">
                                       <ul>
                                         <?php
                                             $categories = $wpdb->get_results("SELECT * FROM `categories` where `status`='1' ");
@@ -225,7 +225,7 @@ if(isset($_GET['list-delete'])){
                                         <li><span class="form-check-box"><input type="checkbox" id="categories" <?php if(in_array($category->id, explode(",",$listing->category))){ echo "checked"; } ?> name="categories[]" value="<?php echo $category->id; ?>" class="check-box-class"/></span><label for="categories" class="inner-form-check-box-label"><?php echo $category->name; ?>(<?php echo $listingCount; ?>)</label></li>
                                         <?php } ?>
                                       </ul>
-                                    </div>
+                                    </div> -->
                                     <div class="Description-class">
                                         <label class="template-label">Description</label>
                                         <textarea name="description" required placeholder="Welcome to our premier dog emporium, where tails wag and hearts melt! Step into a world of canine delight at our dog store, where we cater to every breed, size, and personality. Our store is a haven for all things dog-related, curated with care to ensure your furry friend receives only the best."><?php echo $listing->descriptions; ?></textarea>

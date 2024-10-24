@@ -27,6 +27,18 @@ function my_theme_enqueue_styles() {
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 
 // ============
+// register main menu
+function register_top_nav_menu() {
+    register_nav_menus( array(
+        'top-nav' => __( 'Top Navigation' ),
+    ) );
+}
+add_action( 'init', 'register_top_nav_menu' );
+
+
+
+
+
 
 
 // Remove default sorting options and add custom ones
@@ -297,8 +309,8 @@ function promotedProducts_func() {
             if($current_date >= $start_datetime && $current_date <= $end_datetime){
             
                 if($listing['id'] && $i<8){
-                    $types=mysqli_query($con,"SELECT * FROM `types` where `id`=".$listing["type"]." ");      
-                    $type = mysqli_fetch_array($types);
+                    $categories=mysqli_query($con,"SELECT * FROM `categories` where `id`=".$listing["category"]." ");      
+                    $category = mysqli_fetch_array($categories);
                         $html.='<a href="/product-detail/?id='.$listing['id'].'" class="h_product-card">';
                         if($listing['gallery1']!=''){
                         $html.='<img src="'.$listing['gallery1'].'" alt="'.$listing['title'].'">';
@@ -306,7 +318,7 @@ function promotedProducts_func() {
                         $html.='<img src="/wp-content/uploads/2024/05/images.png" alt="'.$listing['title'].'">';
                         }
                         $html.='<h3>'.$listing['title'].'</h3>';
-                        $html.='<div class="meta">Type: '.$type['name'].' | SKU: '.$listing['stockNumber'].'</div>';
+                        $html.='<div class="meta">Type: '.$category['name'].' | SKU: '.$listing['stockNumber'].'</div>';
                         $html.='<div class="price">$'.$listing['price'].'</div>';
                         $html.='</a>';
                 }
@@ -356,8 +368,8 @@ function promotedProducts_func2() {
             if($current_date >= $start_datetime && $current_date <= $end_datetime){
             
                 if($listing['id'] && $i>7 && $i<16){
-                    $types=mysqli_query($con,"SELECT * FROM `types` where `id`=".$listing["type"]." ");      
-                    $type = mysqli_fetch_array($types);
+                    $categories=mysqli_query($con,"SELECT * FROM `categories` where `id`=".$listing["category"]." ");      
+                    $category = mysqli_fetch_array($categories);
                         $html.='<a href="/product-detail/?id='.$listing['id'].'" class="h_product-card">';
                         if($listing['gallery1']!=''){
                         $html.='<img src="'.$listing['gallery1'].'" alt="'.$listing['title'].'">';
@@ -365,7 +377,7 @@ function promotedProducts_func2() {
                         $html.='<img src="/wp-content/uploads/2024/05/images.png" alt="'.$listing['title'].'">';
                         }
                         $html.='<h3>'.$listing['title'].'</h3>';
-                        $html.='<div class="meta">Type: '.$type['name'].' | SKU: '.$listing['stockNumber'].'</div>';
+                        $html.='<div class="meta">Type: '.$category['name'].' | SKU: '.$listing['stockNumber'].'</div>';
                         $html.='<div class="price">$'.$listing['price'].'</div>';
                         $html.='</a>';
                 }
@@ -585,4 +597,152 @@ function enqueue_fira_sans_extra_condensed() {
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_fira_sans_extra_condensed' );
 
+
+// sub categories
+
+function my_enqueue_scripts() {
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('my-script', get_template_directory_uri() . '/js/my-script.js', array('jquery'), null, true);
+
+    $ajaxurl = admin_url('admin-ajax.php');
+    $inline_script = "var ajaxurl = '$ajaxurl';";
+    wp_add_inline_script('my-script', $inline_script);
+}
+add_action('wp_enqueue_scripts', 'my_enqueue_scripts');
+
+
+add_action('wp_ajax_get_parent_categories', 'get_parent_categories');
+add_action('wp_ajax_nopriv_get_parent_categories', 'get_parent_categories');
+
+function get_parent_categories() {
+    global $wpdb;
+    $level = intval($_POST['category_level']) - 1;
+
+    $response = [];
+
+    if ($level == 1) {
+        $results = $wpdb->get_results(
+            "SELECT id, name, parent_id FROM categories WHERE category_level = " . ($level)
+        );
+
+        if (!empty($results)) {
+            foreach ($results as $category) {
+                $response[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'parent_id' => $category->parent_id,
+                    'top_level' => true
+                ];
+            }
+        }
+
+    } else {
+        $categories = $wpdb->get_results(
+            $wpdb->prepare("SELECT id, name, parent_id FROM categories WHERE category_level = %d", $level)
+        );
+
+        if (!empty($categories)) {
+            foreach ($categories as $category) {
+                $parent = $wpdb->get_row(
+                    $wpdb->prepare("SELECT id, name FROM categories WHERE id = %d", $category->parent_id)
+                );
+
+                if ($parent) {
+                    $parent_name = $parent->name;
+
+                    if (!isset($response[$parent_name])) {
+                        $response[$parent_name] = [
+                            'parent_name' => $parent_name,
+                            'categories' => [],
+                            'top_level' => false
+                        ];
+                    }
+
+                    $response[$parent_name]['categories'][] = [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                    ];
+                }
+            }
+            $response = array_values($response);
+        }
+    }
+    wp_send_json($response);
+    wp_die();
+}
+
+
+add_action('wp_ajax_get_categories_by_child', 'get_categories_by_child');
+add_action('wp_ajax_nopriv_get_categories_by_child', 'get_categories_by_child');
+
+function get_categories_by_child() {
+    global $wpdb;
+    $parent_id = intval($_POST['parent_id']);
+
+    $response = [];
+
+    $categories = $wpdb->get_results(
+        $wpdb->prepare("SELECT id, name FROM categories WHERE parent_id = %d", $parent_id)
+    );
+
+    if (!empty($categories)) {
+        foreach ($categories as $category) {
+            $response[] = [
+                'id' => $category->id,
+                'name' => $category->name
+            ];
+        }
+    }
+
+    wp_send_json($response);
+    wp_die();
+}
+
+
+// search products
+function enqueue_custom_scripts() {
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('my-script', get_template_directory_uri() . '/js/my-script.js', array('jquery'), null, true);
+
+    wp_localize_script('my-script', 'ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('search_products_nonce') // Use if you want to add nonce
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
+
+
+
+
+function search_products_ajax_handler() {
+    // Verify nonce for security
+    check_ajax_referer('search_products_nonce', 'nonce');
+
+    global $wpdb;
+    $search_query = sanitize_text_field($_POST['search']); // Clean the search search
+    $state = sanitize_text_field($_POST['state']); // Clean the state value
+
+    $sql = "SELECT * FROM listings WHERE title LIKE %s";
+    $params = array('%' . $wpdb->esc_like($search_query) . '%');
+
+    if (!empty($state)) {
+        $sql .= " AND state = %s";
+        $params[] = $state;
+    }
+
+    $sql .= " LIMIT 10";
+    $products = $wpdb->get_results($wpdb->prepare($sql, $params));
+
+    if (!empty($products)) {
+        wp_send_json_success($products);
+    } else {
+        wp_send_json_error('No products found');
+    }
+}
+
+add_action('wp_ajax_search_products', 'search_products_ajax_handler');
+add_action('wp_ajax_nopriv_search_products', 'search_products_ajax_handler');
+
+
+// search products
 ?>

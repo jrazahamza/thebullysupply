@@ -1,3 +1,235 @@
+/* search */
+.suggestions-dropdown {
+  border: 1px solid #ccc;
+  background-color: white;
+  position: absolute;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  display: none;
+  z-index: 1000;
+	top: 50px;
+    border-radius: 10px;
+    color: black;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}
+#loading-indicator{
+	color: black;	
+}
+
+/* search */
+
+
+
+/* ruk filter section  */
+
+.ruk-filter-section .filter-section> h2, .filter-title, label, span, select, option {
+    font-family: Manrope !important;
+}
+
+.ruk-filter-section .filter-section {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+.ruk-filter-section h2, h3 {
+      margin-bottom: 15px;
+    }
+
+.ruk-filter-section .filter-category {
+      margin-bottom: 15px;
+    }
+
+.ruk-filter-section .filter-title {
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+.ruk-filter-section .filter-content {
+      display: block;
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+
+.ruk-filter-section .filter-group {
+      margin: 10px 0px;
+    }
+
+.ruk-filter-section .filter-group input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+.ruk-filter-section .filter-group a {
+      color: #007bff;
+      font-size: 0.9em;
+      text-decoration: none;
+    }
+
+.ruk-filter-section .filter-group a:hover {
+      text-decoration: underline;
+    }
+
+    /* Arrow Icons */
+.ruk-filter-section .arrow {
+      border: solid black;
+      border-width: 0 2px 2px 0;
+      display: inline-block;
+      padding: 3px;
+      margin-left: 5px;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+.ruk-filter-section .collapsed .arrow {
+      transform: rotate(-135deg);
+    }
+
+ 
+.ruk-filter-section h2, h3 {
+      margin-bottom: 15px;
+    }
+
+.ruk-filter-section .filter-category {
+      margin-bottom: 15px;
+    }
+
+.ruk-filter-section .filter-title {
+      font-weight: bold;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+.ruk-filter-section .filter-group {
+      margin-bottom: 10px;
+    }
+
+.ruk-filter-section .filter-group input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+.ruk-filter-section .filter-group a {
+      color: #007bff;
+      font-size: 0.9em;
+      text-decoration: none;
+    }
+
+.ruk-filter-section .filter-group a:hover {
+      text-decoration: underline;
+    }
+
+    /* Custom Dropdown */
+.ruk-filter-section select {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    /* Ratings */
+.ruk-filter-section .rating-stars {
+      display: inline-block;
+      color: gold;
+      font-size: 24px;
+      margin: 15px 0px;
+    }
+
+.ruk-filter-section .rating-stars i {
+      margin-right: 5px;
+    }
+
+    /* Price and Age Sliders */
+.ruk-filter-section .slider-group {
+      margin-bottom: 15px;
+    }
+
+.ruk-filter-section .slider-group input[type="range"] {
+      width: 100%;
+    }
+
+.ruk-filter-section .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }    
+    
+
+.ruk-filter-section {
+    margin-left: 60px;
+    margin-top: 28px;
+}
+
+.ruk-filter-section .filter-group .parent-cta {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.ruk-filter-section .filter-main-title {
+    font-size: 20px;
+    color: #000;
+}    
+
+.ruk-filter-section .slider-group input[type="range"] {
+  -webkit-appearance: none; /* Removes the default appearance */
+  width: 100%; /* Full width */
+  height: 8px; /* Height of the track */
+  background: #cfb3b3; /* Track background */
+  outline: none; /* Removes the default outline */
+  border-radius: 5px; /* Rounds the track edges */
+}
+
+
+.ruk-filter-section .slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override the default thumb appearance */
+  appearance: none;
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #8B1339; /* Thumb color */
+  cursor: pointer; /* Mouse pointer on hover */
+  border-radius: 50%; /* Rounded thumb */
+}
+
+/*end of ruk filter section  */
+
+
+.categories-dropdown {
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.categories-list, .sub-menu, .sub-sub-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-menu, .sub-sub-menu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+}
+
 /* Base styles */
 .m_c_filters-row {
     display: none; /* Hide by default */
@@ -152,6 +384,417 @@ div#header-outer li#menu-item-46 a:after{
 #header-outer[data-lhe="animated_underline"] #top nav >ul >li >a span:after {
     display: none !important;
 }
+/* new header ruk */
+
+.site-branding-search {
+    background-color: #0B1E3E;
+    height: 94px;
+    color:#fff;
+}
+.site-branding-search .row{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    align-content:center;
+}
+.site-branding-search .logo img{
+    width:142px;
+    margin-top:19px
+}
+
+
+/* Container for the search bar */
+.search-container {
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	border-radius: 10px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	max-width: 850px;
+	width: 100%;
+}
+
+/* Search input field */
+.search-container input[type="text"] {
+	flex-grow: 1;
+	border: none;
+	padding: 10px 15px;
+	font-size: 16px;
+	color: #666;
+	outline: none;
+	width: 72em;
+	font-family: Manrope;
+}
+
+/* Dropdown for Locations */
+.search-container .ruk-select {
+	border: none;
+	padding: 10px;
+	font-size: 16px;
+	background-color: transparent;
+	color: #666;
+	outline: none;
+	margin-right: 20px;
+	font-family: Manrope;
+	max-height: 260px !important; 
+   overflow-y: auto;  
+	  display: block;
+	max-width:160px;
+}
+
+/* Search Button */
+.search-button {
+	background-color: #FFD166; /* Yellow */
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	outline: none;
+}
+
+.search-button:hover {
+	background-color: #FFD166; /* Darker yellow on hover */
+}
+
+/* SVG Icon */
+.search-button svg {
+	width: 24px;
+	height: 24px;
+	color: #333;
+}
+.ruk-select::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ruk-select::-webkit-scrollbar-thumb {
+    background-color: #888; /* Customize scrollbar color */
+    border-radius: 10px;
+}
+
+.ruk-select::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+.ruk-custom-main-nav{
+	padding:0px !important;
+}
+.ruk-custom-main-nav .all-categories {
+    background-color: #0B1E3E;
+    color: #fff !important;!I;!;
+    padding: 6px 10px;
+    border-radius: 14px;
+}
+
+.ruk-custom-top-nav li.nav-item {
+    list-style: none;
+}
+.ruk-custom-top-nav .dropdown-menu li{
+list-style: none;
+}
+.ruk-custom-top-nav .dropdown-menu .dropdown-item{
+	color:#000 !important;
+}
+.ruk-custom-top-nav .nav-item a{
+    color:#ffff !important;
+}
+
+.thebully-main-nav .menu-item-type-custom {
+    list-style: none;
+    display:flex;
+    align-items:center
+}
+
+.thebully-main-nav .menu-item-type-custom a{
+    color:#00171F;
+    font-size:14px;
+    font-family:Manrope;
+    text-decoration:none;
+    padding:0px 11px;
+}
+
+.thebully-main-nav .nav-item {
+    list-style: none;
+}
+.thebully-main-nav .nav-item a {
+    color:#00171F !important;
+}
+
+/* mega menu */
+
+.categories-list{
+    padding:20px 20px;
+}
+.categories-list li {
+    list-style: none;
+    margin:20px 0px;
+}
+.categories-list li a{
+    color:#000;
+    text-decoration:none;
+}
+.sub-menu{
+    background-color:#ffff;
+    padding:20px 20px;
+    margin-left:-20px;
+    width:240px;
+    
+}
+.sub-sub-menu{
+    background-color:#ffff;
+    padding:20px 20px;
+    margin-left:-20px;
+    display: none; /* This is based on your existing code, you can toggle it with JS if needed */
+    column-count: 3; /* Creates two columns */
+    column-gap: 40px; /* Adds spacing between columns */
+    width: 680px; /* Ensures the width is full for layout adjustment */
+}
+
+.sub-sub-menu li {
+    break-inside: avoid; 
+}
+
+/* end mega menu */
+/* end of new header ruk */
+
+
+/* ruk custom footer */
+/* top cta */
+
+
+.container-ruk{
+  width:80%;
+  margin:auto;
+}
+/* Categories Section */
+.categories-section {
+    background-color: #f8f9fa;
+}
+.categories-section .ruk-row {
+    display: flex;
+    justify-content: space-between;
+}
+.categories-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 40px;
+}
+
+.categories-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+}
+
+.categories-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.categories-section ul li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.categories-section .ruk-row li {
+    list-style: none;
+}
+.categories-section .ruk-row ul{
+    margin:0;
+    padding:0;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    display: flex;
+}
+.newsletter-section a{
+	color:#fff;
+}
+.newsletter-left, .newsletter-right {
+    width: 50%;  
+}
+.newsletter-section .newsletter-right{
+    padding: 40px;
+    background-color: #003459;
+}
+
+.newsletter-section .newsletter-left{
+    padding: 40px;
+    background-color: #0B1E3E;
+}
+
+.newsletter-left h2, .newsletter-right h2 {
+    font-size: 1.5rem;
+}
+
+.newsletter-form {
+    margin: 20px 0;
+    display: flex;
+}
+
+.newsletter-form input[type="email"] {
+    padding: 18px;
+    flex: 1;
+    border: none;
+    border-radius: 5px 0 0 5px;
+  border:1px solid #fff;
+  background-color:transparent;
+}
+
+.newsletter-left .newsletter-form button {
+    color: #000;
+    background-color: #FFD166 !important;
+}
+.newsletter-form button {
+    padding: 10px 46px;
+    border: none;
+    background-color: #FFD166 !important;
+    color: black;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+.newsletter-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.checkbox-container {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.bully-certified {
+    background-color: #8B1339;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.get-your-go{
+  margin-top:14px;
+}
+
+/* Footer Section */
+footer {
+    background-color: #181818;
+    padding: 40px;
+}
+.footer ul li {
+	list-style:none;
+}
+.footer ul li a{
+	text-decoration:none;
+	color:#fff;
+}
+.footer-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.social-icons {
+    display: flex;
+}
+.footer-left {
+    width: 35%;
+}
+
+.footer-left img {
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+.footer-left p {
+    margin: 10px 0;
+}
+
+.social-icons a {
+    margin-right: 10px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+}
+.sub-cta-list {
+    display: flex;
+   justify-content:space-between;
+}
+.footer-column h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column ul li {
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 20px;
+    font-size: 0.9rem;
+}
+
+.footer-terms {
+    list-style: none;
+    display: flex;
+}
+
+.footer-terms li {
+    margin-left: 20px;
+}
+
+.footer-links{
+    width:90%;
+    margin:auto;
+
+}
+.newsletter-left h2 {
+    color:#fff;
+}
+.newsletter-left .checkbox-container{
+    color:#fff;
+}
+.newsletter-right h2, p {
+    color: #fff;
+}
+.footer-links a{
+    color:#fff;
+}
+.footer-links h3{
+    color:#fff;
+}
+.footer-column ul{
+    margin:0px;
+    padding:0px;
+}
+
+.social-links ul {
+    margin: 0;
+    padding: 0;
+    
+}
+.social-links ul li{
+    margin:10px 0px; 
+}
+.social-links .social-icons{
+    margin-top:14px;
+}
+.footer-left .logo img {
+    width: 260px;
+}
+/* end ruk custom footer */
 
 div#section1 h1 {
     font-size: 45px;
