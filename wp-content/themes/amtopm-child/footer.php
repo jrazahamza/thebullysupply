@@ -24,9 +24,9 @@ nectar_hook_before_footer_open();
 <!-- Top Categories Section -->
 <section class="categories-section py-5">
 	<div classs="our-partners">
-		<div class="container-ruk">
+		<div class="container-footer">
         <h2 class="text-left mb-5">Our Partners</h2>
-		<div class="partners-logos d-flex justify-content-between">
+		<div class="partners-logos d-flex justify-content-between gap-2">
 			<div class="logo"><img src="/wp-content/uploads/2024/10/Group-1321316255.png" /> </div>
 			<div class="logo"><img src="/wp-content/uploads/2024/10/Group-1321316256.png" /> </div>
 			<div class="logo"><img src="/wp-content/uploads/2024/10/Group-1321316257.png" /> </div>
@@ -36,7 +36,7 @@ nectar_hook_before_footer_open();
 		</div>
 		</div>
 	</div>
-    <div class="container-ruk">
+    <div class="container-footer">
         <h2 class="text-left mb-5">OUR TOP CATEGORIES</h2>
         <div class="row ruk-row">
             <div class="col-md-2">
@@ -135,7 +135,7 @@ nectar_hook_before_footer_open();
     </div>
     <div class="newsletter-right">
       <div class="newsletter-con">
-        <h2>ARE YOU BULLY<br> CERTIFIED?</h2>
+        <h2>ARE YOU BULLY CERTIFIED?</h2>
         <p class="get-your-go">Get your go-to brands at discount prices.</p>
         <p> Just for Pros</p>
         </div>
@@ -147,6 +147,7 @@ nectar_hook_before_footer_open();
 
 <!-- Footer Section -->
 <footer class="footer">
+	<div class="container-footer">
     <div class="footer-links">
      <div class="footer-left">
        <div class="logo">
@@ -199,12 +200,15 @@ nectar_hook_before_footer_open();
             </ul>
         </div>
     </div>
-    <div class="footer-bottom">
-        <p>© 2024 Bully Supply. All rights reserved.</p>
+	</div>
+	<div class="container-footer">
+       <div class="footer-bottom">		
+        <p>© 2024 Bully Supply. All rights reserved.</p>
         <ul class="footer-terms">
             <li><a href="#">Terms of Service</a></li>
             <li><a href="#">Privacy Policy</a></li>
         </ul>
+		</div>
     </div>
 </footer>
 

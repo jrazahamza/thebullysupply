@@ -5,10 +5,10 @@
   position: absolute;
   max-height: 200px;
   overflow-y: auto;
-  width: 100%;
+  width: 57%;
   display: none;
   z-index: 1000;
-	top: 50px;
+	top: 65px;
     border-radius: 10px;
     color: black;
 }
@@ -402,7 +402,9 @@ div#header-outer li#menu-item-46 a:after{
     margin-top:19px
 }
 
-
+.custom-header .navbar {
+    padding: 4;
+}
 /* Container for the search bar */
 .search-container {
 	display: flex;
@@ -454,7 +456,10 @@ div#header-outer li#menu-item-46 a:after{
 	justify-content: center;
 	outline: none;
 }
-
+.search-sec-top {
+    display: flex;
+    justify-content: center;
+}
 .search-button:hover {
 	background-color: #FFD166; /* Darker yellow on hover */
 }
@@ -468,7 +473,10 @@ div#header-outer li#menu-item-46 a:after{
 .ruk-select::-webkit-scrollbar {
     width: 8px;
 }
-
+.site-branding-search .ruk-custom-top-nav {
+    width: 100%;
+    justify-content: flex-end;
+}
 .ruk-select::-webkit-scrollbar-thumb {
     background-color: #888; /* Customize scrollbar color */
     border-radius: 10px;
@@ -520,7 +528,12 @@ list-style: none;
 .thebully-main-nav .nav-item a {
     color:#00171F !important;
 }
-
+.ruk-custom-top-nav .nav-item.dropdown {
+    margin-left: 28px;
+}
+.ruk-custom-top-nav .dropdown-toggle small{
+    font-size:12px
+}
 /* mega menu */
 
 .categories-list{
@@ -564,7 +577,11 @@ list-style: none;
 
 
 .container-ruk{
-  width:80%;
+  width:96%;
+  margin:auto;
+}
+.container-footer{
+  width:75%;
   margin:auto;
 }
 /* Categories Section */
@@ -673,7 +690,13 @@ list-style: none;
     cursor: pointer;
     font-size: 1rem;
 }
+.newsletter-section .newsletter-left {
+    padding-left: 15em;
+}
 
+.newsletter-section .newsletter-right {
+    padding-right: 15em;
+}
 .get-your-go{
   margin-top:14px;
 }
@@ -681,7 +704,7 @@ list-style: none;
 /* Footer Section */
 footer {
     background-color: #181818;
-    padding: 40px;
+    padding: 40px 0px;
 }
 .footer ul li {
 	list-style:none;
@@ -723,6 +746,7 @@ footer {
 .sub-cta-list {
     display: flex;
    justify-content:space-between;
+	width:190px;
 }
 .footer-column h3 {
     font-size: 1.2rem;
@@ -756,7 +780,7 @@ footer {
 }
 
 .footer-links{
-    width:90%;
+    width:100%;
     margin:auto;
 
 }

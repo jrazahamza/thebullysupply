@@ -1,12 +1,15 @@
 <style>
-.loader {
-    border: 4px solid #f3f3f3; /* Lighter grey */
+.loading {
+    border: 4px solid #ffff;
     border-radius: 50%;
-    border-top: 4px solid #3498db; /* Blue */
-    width: 15px; /* Smaller size */
-    height: 15px; /* Smaller size */
-    -webkit-animation: spin 2s linear infinite; /* Safari */
+    border-top: 4px solid #3498db;
+    width: 25px;
+    height: 25px;
+    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
+    position: absolute;
+    right: 245px;
+    z-index: 999;
 }
 
 @-webkit-keyframes spin {
@@ -80,14 +83,14 @@ if(isset($_GET["user-action"]) && $_GET["user-action"]=='logout'){
 						 
 						 
 						<!-- Search Input -->
-							<input 
-							  type="text" 
-							  id="search-input" 
-							  placeholder="Find Bully, Supplies and more...." 
-							  autocomplete="off"
-							  value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>"
-							/>
-						 	<div class="loader"></div>
+								<input 
+								   type="text" 
+								   id="search-input" 
+								   placeholder="Find Bully, Supplies and more...." 
+								   autocomplete="off"
+								   value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>"
+								   />
+						 	<div class="loading" style="display: none;"></div>
 							<div id="suggestions-dropdown" class="suggestions-dropdown"></div>
 
 				<!-- Locations Dropdown -->
@@ -194,7 +197,7 @@ if(isset($_GET["user-action"]) && $_GET["user-action"]=='logout'){
 		</div>
 	</div>
 	<div class="navbar">
-		<div class="container">	
+		<div class="container-ruk">	
 		<nav class="navbar navbar-expand-lg navbar-light w-100 ruk-custom-main-nav">
 		  <div class="container-fluid">
 			  
@@ -266,7 +269,7 @@ if(isset($_GET["user-action"]) && $_GET["user-action"]=='logout'){
 					</nav>
 				</div>
 					
-				  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+				  <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
 					<li class="nav-item">
 					  <a class="nav-link" href="#">Sell</a>
 					</li>
@@ -356,94 +359,102 @@ jQuery(document).ready(function($) {
 	   fetchSuggestions(search, state);
 	}
 	
-	
-    $('.search-button').on('click', function() {
-        const search = $('#search-input').val();
-        const state = $('select[name="state"]').val(); // Get selected state value
+	  let previousSuggestions = [];
 
-        // Trigger search only if there's a search
-        if (search.length > 0) {
-            showLoadingIndicator(); // Show loading indicator
-            fetchSuggestions(search, state); // Pass both search and state
-        } else {
-            hideSuggestions();
-        }
-    });
-
-    // Trigger search when the state is changed, if search exists
-    $('select[name="state"]').on('change', function() {
-        const search = $('#search-input').val();
-        const state = $(this).val();
+    // Trigger search suggestions on input
+    $('#search-input').on('input', function() {
+        const search = $(this).val();
+        const state = $('select[name="state"]').val();
 
         if (search.length > 0) {
-            showLoadingIndicator(); // Show loading indicator
+            showLoadingIndicator();
             fetchSuggestions(search, state);
         } else {
             hideSuggestions();
         }
     });
 
-    function fetchSuggestions(search, state) {
+    $('#search-input').on('click', function() {
+        if (previousSuggestions.length > 0) {
+            showSuggestions(previousSuggestions);
+        }
+    });
+
+     function fetchSuggestions(search, state) {
         $.ajax({
-            url: ajax_object.ajax_url, // Use ajax_object.ajax_url
+            url: ajax_object.ajax_url, 
             method: 'POST',
             data: {
                 action: 'search_products',
                 search: search,
-                state: state, // Include state in the request
-                nonce: ajax_object.nonce // Pass the nonce if needed
+                state: state, 
+                nonce: ajax_object.nonce 
             },
             success: function(response) {
-                hideLoadingIndicator(); // Hide loading indicator on response
+                hideLoadingIndicator();
                 if (response.success) {
+                    previousSuggestions = response.data;
                     showSuggestions(response.data);
                 } else {
                     hideSuggestions();
                 }
             },
             error: function() {
-                hideLoadingIndicator(); // Hide loading indicator on error
+                hideLoadingIndicator();
                 hideSuggestions();
             }
         });
     }
 
     function showLoadingIndicator() {
-        $('#loading-indicator').show(); // Show loading indicator
+        $('.loading').show();
     }
 
     function hideLoadingIndicator() {
-        $('#loading-indicator').hide(); // Hide loading indicator
+        $('.loading').hide();
     }
+	
+ 	function showSuggestions(products) {
+        const suggestionsDropdown = $('#suggestions-dropdown');
+        suggestionsDropdown.empty();
 
-	function showSuggestions(products) {
-		const suggestionsDropdown = $('#suggestions-dropdown');
-		suggestionsDropdown.empty();
+        products.forEach(product => {
+            const item = $('<div class="suggestion-item"></div>').text(product.title);
+            item.on('click', function() {
+                $('#search-input').val(product.title);
+                suggestionsDropdown.hide();
+            });
 
-		products.forEach(product => {
-			const item = $('<div class="suggestion-item"></div>').text(product.title);
-			item.on('click', function() {
-				$('#search-input').val(product.title); // Set the input value
+            suggestionsDropdown.append(item);
+        });
 
-				// Construct the URL for redirection
-				const state = $('select[name="state"]').val();
-				const search = encodeURIComponent(product.title);
-				const stateParam = state ? `&state=${state}` : ''; // Add state if selected
-
-				// Redirect to the category page
-				window.location.href = `/category?search=${search}${stateParam}`; // Update the URL accordingly
-			});
-
-			suggestionsDropdown.append(item);
-		});
-
-		suggestionsDropdown.show();
-	}
+        suggestionsDropdown.show();
+    }
 
 
     function hideSuggestions() {
         $('#suggestions-dropdown').hide().empty();
     }
+	
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#search-input, #suggestions-dropdown').length) {
+            hideSuggestions();
+        }
+    });
+
+    $('#search-input, #suggestions-dropdown').on('click', function(event) {
+        event.stopPropagation();
+    });
+	
+	$('.search-button').on('click', function() {
+
+		const state = $('select[name="state"]').val();
+		const s = $('#search-input').val();
+		const search = encodeURIComponent(s);
+		const stateParam = state ? `&state=${state}` : '';
+
+		window.location.href = `/category?search=${search}${stateParam}`;
+    });
 });
 
 
