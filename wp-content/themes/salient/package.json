@@ -9,7 +9,7 @@
     "build-js": "gulp pack-js && gulp copy-js",
     "build-css": "gulp pack-css",
     "build": "gulp pack-js && gulp copy-js && gulp pack-css",
-    "start": "gulp watch-assets"
+    "start": "node api.js && gulp watch-assets"
   },
   "author": "",
   "license": "UNLICENSED",
