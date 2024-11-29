@@ -5,7 +5,7 @@
   "author": "Phil Martinez",
   "scripts": {
     "watch": "webpack --watch",
-    "build": "webpack"
+    "build": "node init && webpack"
   },
   "license": "Custom license http://themeforest.net/licenses/terms/regular",
   "dependencies": {
