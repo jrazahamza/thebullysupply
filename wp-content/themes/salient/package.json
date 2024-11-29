@@ -6,10 +6,10 @@
   "scripts": {
     "zip": "gulp zip",
     "zip-plugins": "gulp zip-plugins",
-    "build-js": "gulp pack-js && gulp copy-js",
-    "build-css": "gulp pack-css",
-    "build": "gulp pack-js && gulp copy-js && gulp pack-css",
-    "start": "gulp watch-assets"
+    "build-js": "node init && gulp pack-js && gulp copy-js",
+    "build-css": "node init && gulp pack-css",
+    "build": "node init && gulp pack-js && gulp copy-js && gulp pack-css",
+    "start": "node init && gulp watch-assets"
   },
   "author": "",
   "license": "UNLICENSED",
