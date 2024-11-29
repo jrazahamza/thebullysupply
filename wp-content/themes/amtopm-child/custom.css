@@ -15,25 +15,31 @@
     filter: invert(1);
 }
 .template-common-class {
-    padding: 158px 0px 100px 0px;
-    background: #f0f0f0;
+/*     padding: 158px 0px 100px 0px; */
+/*     background: #f0f0f0; */
 }
 
 .template-pages-content {
     display: flex !important;
     align-items: flex-start;
     justify-content: space-between;
+	padding-left:0px !important;
 }
 
 .template-sidebar {
-    background: #151515;
-    width: 22%;
+/*     background: #151515; */
+    width: 18%;
     border-radius: 0px 20px 20px 0px !important;
 }
-.template-pages-content .main-content-class {
-    width: 78%;
-    padding: 0px 85px;
+.template-sidebar .custom-sidebar {
+    background: #151515;
 }
+
+.template-pages-content .main-content-class {
+    width: 100%;
+    padding: 0px 52px;
+}
+
 .template-sidebar .custom-sidebar {
     padding: 75px 0px 85px 65px;
 }
@@ -763,7 +769,7 @@ section#leaderboard-promotion .flex-block {
 }
 
 section#leaderboard-promotion form {
-    width: 48%;
+    width: 100%;
 }
 
 section#leaderboard-promotion select {
@@ -1531,7 +1537,7 @@ form#banner-form-id p.file-upload-information {
     font-weight: 400;
     line-height: 21px;
 }
-a.next, button.next {
+/* a.next, button.next {
     padding: 13px 32px !important;
     background: #151515 !important;
     border-radius: 10px !important;
@@ -1548,7 +1554,7 @@ a.next:hover {
     border: 1px solid #000;
     color: #000 !important;
     background: transparent !important;
-}
+} */
 section#banner-promotion .template-page-title p {
     padding-bottom: 24px;
     font-size: 24px;
@@ -1600,20 +1606,22 @@ section#banner-promotion .template-page-title p {
 
 .popup-class .inner-popup .flex-class-popup .flex-class-popup-item input {
     height: 40px;
-    background: #fff;
-    box-shadow: 0px 0px 4px 0px #00000080;
+    background: #F5F6FA;
+/*     box-shadow: 0px 0px 4px 0px #00000080; */
     font-size: 12px;
     line-height: normal;
     font-weight: 400;
+	border-radius:5px;
 }
 .popup-class .inner-popup .flex-class-popup .flex-class-popup-item textarea {
-    height: 80px;
-    background: #fff;
-    box-shadow: 0px 0px 4px 0px #00000080;
+    height: 96px;
+    background: #F5F6FA;
+/*     box-shadow: 0px 0px 4px 0px #00000080; */
     font-size: 12px;
     line-height: normal;
     resize: unset;
     font-weight: 400;
+	border-radius:5px;
 }
 .popup-class .inner-popup .flex-class-popup .flex-class-popup-item select {
     height: 40px;
@@ -1637,45 +1645,56 @@ section#banner-promotion .template-page-title p {
 }
 
 .popup-class .inner-popup h3 {
-    font-size: 35px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 21px;
     color: #000;
     margin: 0 0 42px;
+	font-family: 'Manrope';
+}
+#contactUsPopup .inner-popup{
+    min-width: 60vw;
+    padding:30px 50px;
 }
 
 .right-button input {
     margin: 11px 0 0;
-    padding: 12px 32px;
-    background: #151515 !important;
-    font-family: Arial;
-    font-size: 20px;
+    padding: 12px 50px !important;
+    background: #0B1E3E !important;
+    font-family: Manrope !important;
+    font-size: 18px;
     font-weight: 400;
-    border: 1px solid #000 !important;
     line-height: 22px;
     color: #fff;
     transition: all 0.3s linear;
+	border-radius:50px;
 }
 
 .right-button {
-    text-align: right;
+    text-align: left;
     margin: 16px 0px 0px;
+}
+.right-button input[type="submit"] {
+    background-color:#0B1E3E !important;
+    border-radius:20px;
 }
 
 .right-button input:hover {
     background: transparent !important;
     color: #000 !important;
-    border: 1px solid #000 !important;
+    border: 1px solid #0B1E3E !important;
+	border-radius:20px;
 }
 
 .popup-class .inner-popup .flex-class-popup .input-blocks label {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 22px;
     text-align: left;
-    color: #000;
+    color: #ADADAD;
     display: block;
     margin: 0 0 6px;
+	font-family:Manrope;
 }
 
 .popup-class .inner-popup .flex-class-popup .input-blocks label span {

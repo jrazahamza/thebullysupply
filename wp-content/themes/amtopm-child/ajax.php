@@ -1,4 +1,5 @@
 <?php
+
 include ('connection.php');
 $vendor=$_POST['id'];
 $customer=$_POST['senderid'];

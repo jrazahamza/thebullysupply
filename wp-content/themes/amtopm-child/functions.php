@@ -36,6 +36,12 @@ function register_top_nav_menu() {
 add_action( 'init', 'register_top_nav_menu' );
 
 
+function enqueue_slick_slider() {
+    wp_enqueue_style('slick-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
+    wp_enqueue_style('slick-theme-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
+    wp_enqueue_script('slick-js', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js', array('jquery'), null, true);
+}
+add_action('wp_enqueue_scripts', 'enqueue_slick_slider');
 
 
 
@@ -500,20 +506,19 @@ function promotedBanner_func3() {
 }
 add_shortcode('promotedBanner3', 'promotedBanner_func3');
 
-function enqueue_slick_slider_assets() {
-    // jQuery (usually already included in WordPress)
-    wp_enqueue_script('jquery');
+// slick slider 
 
-    // Slick Slider CSS
-    wp_enqueue_style('slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css');
-    wp_enqueue_style('slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css');
+// function enqueue_slick_slider_assets() {
+    
+//     wp_enqueue_script('jquery');
 
-    // Slick Slider JS
-    wp_enqueue_script('slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', array('jquery'), null, true);
-}
+//     wp_enqueue_style('slick-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css');
+//     wp_enqueue_style('slick-theme-css', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css');
 
-add_action('wp_enqueue_scripts', 'enqueue_slick_slider_assets');
+//     wp_enqueue_script('slick-js', 'https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js', array('jquery'), null, true);
+// }
 
+// add_action('wp_enqueue_scripts', 'enqueue_slick_slider_assets');
 
 
 function categories_show_func() {
@@ -711,9 +716,6 @@ function enqueue_custom_scripts() {
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
-
-
-
 function search_products_ajax_handler() {
     // Verify nonce for security
     check_ajax_referer('search_products_nonce', 'nonce');
@@ -743,6 +745,443 @@ function search_products_ajax_handler() {
 add_action('wp_ajax_search_products', 'search_products_ajax_handler');
 add_action('wp_ajax_nopriv_search_products', 'search_products_ajax_handler');
 
+// page custom template assign to page
+
+function auto_assign_template_by_slug($template) {
+    if (is_page('contact-us')) { // Replace 'contact-us' with your page slug
+        $new_template = locate_template('template-contact-us.php'); // Replace with your template file
+        if ($new_template) {
+            return $new_template;
+        }
+    }
+	else if (is_page('about-us')) { // Replace 'contact-us' with your page slug
+        $new_template = locate_template('about-us.php'); // Replace with your template file
+        if ($new_template) {
+            return $new_template;
+        }
+    }
+	else if (is_page('blog')) { // Replace 'contact-us' with your page slug
+        $new_template = locate_template('template-blog.php'); // Replace with your template file
+        if ($new_template) {
+            return $new_template;
+        }
+    }	
+	else if (is_page('home-2')) { // Replace 'contact-us' with your page slug
+        $new_template = locate_template('template-home.php'); // Replace with your template file
+        if ($new_template) {
+            return $new_template;
+        }
+    }
+   else if (is_page('account-settings')) { // Replace 'contact-us' with your page slug
+        $new_template = locate_template('account-settings.php'); // Replace with your template file
+        if ($new_template) {
+            return $new_template;
+        }
+    }
+  else if (is_singular('post')) {
+        // Specify your custom template file for blog detail
+        $new_template = locate_template('blog-detail.php'); // Replace 'template-blog-detail.php' with your custom template filename
+        
+        if (!empty($new_template)) {
+            return $new_template;
+        }
+    }
+
+    return $template;
+}
+add_filter('template_include', 'auto_assign_template_by_slug');
+
+
 
 // search products
+
+function enqueue_sweetalert() {
+    wp_enqueue_script( 'sweetalert', 'https://cdn.jsdelivr.net/npm/sweetalert2@11', array( 'jquery' ), null, true );
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_sweetalert' );
+
+
+
+// my custom session
+function start_php_session() {
+    if (!session_id()) {
+        session_start();
+    }
+}
+add_action('init', 'start_php_session');
+
+// Set custom session variables
+function set_custom_session_variables($session_name, $val) {
+    if (session_id()) {
+        $_SESSION[$session_name] = $val;
+    }
+}
+
+// Retrieve custom session variables
+function get_custom_session_variables($session_name) {
+    if (session_id() && isset($_SESSION[$session_name])) {
+        return $_SESSION[$session_name];
+    }
+    return null;
+}
+
+function unset_custom_session_variable($session_name) {
+    if (session_id() && isset($_SESSION[$session_name])) {
+        unset($_SESSION[$session_name]);
+    }
+}
+// my custom session
+
+
+
+// registration
+
+// Enqueue JavaScript for the form submission
+function enqueue_registration_script() {
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('registration-script', get_stylesheet_directory_uri() . '/js/registration-script.js', array('jquery'), null, true);
+
+    // Localize script to pass AJAX URL and nonce
+    wp_localize_script('registration-script', 'ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('registration_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_registration_script');
+
+// AJAX handler for registration form
+function handle_registration() {
+    check_ajax_referer('registration_nonce', 'nonce');
+
+    global $wpdb;
+    $username = sanitize_text_field($_POST['fullname']);
+    $useremail = sanitize_email($_POST['email']);
+    $password = sanitize_text_field($_POST['password']);
+    $confirmPassword = sanitize_text_field($_POST['confirmPassword']);
+    $errorMessage = '';
+
+    // Validate passwords
+    if ($password !== $confirmPassword) {
+        wp_send_json_error(['errorMessage' => 'Password and confirm password do not match!']);
+        return;
+    }
+
+    // Check if username or email already exists
+    $username_exists = $wpdb->get_var($wpdb->prepare("SELECT id FROM `account` WHERE `username` = %s", $username));
+    if ($username_exists) {
+        wp_send_json_error(['errorMessage' => 'The username already exists. Please try another unique username!']);
+        return;
+    }
+
+    $email_exists = $wpdb->get_var($wpdb->prepare("SELECT id FROM `account` WHERE `email` = %s", $useremail));
+    if ($email_exists) {
+        wp_send_json_error(['errorMessage' => 'The email already exists. Please try another email address!']);
+        return;
+    }
+
+    // Insert the new user
+    $insert = $wpdb->insert('account', array(
+        'firstname' => $username,
+        'email' => $useremail,
+        'password' => $password,
+        'status' => 1,
+        'role' => 'vendor'
+    ));
+
+    if ($insert) {
+        $userID = $wpdb->insert_id;
+
+        // Additional insertions for related tables
+        $wpdb->insert('address', array('userID' => $userID, 'status' => 1));
+        $wpdb->insert('shop', array('userID' => $userID, 'status' => 1));
+
+        setcookie("user_id", $userID, time() + (86400 * 30), "/");
+        setcookie("user_role", 'vendor', time() + (86400 * 30), "/");
+		
+		$_SESSION['auth'] = [
+			'firstname' => $username,
+			'email' => $useremail,
+		];
+
+         	$redirect_url = '/' ;
+            wp_send_json_success(['redirect' => $redirect_url]);
+    } else {
+        wp_send_json_error(['errorMessage' => 'Registration failed. Please try again later.']);
+    }
+}
+
+add_action('wp_ajax_handle_registration', 'handle_registration');
+add_action('wp_ajax_nopriv_handle_registration', 'handle_registration');
+
+
+// listing
+
+// Handle AJAX request for fetching listings
+// AJAX Action Hooks
+add_action('wp_ajax_fetch_listings', 'fetch_listings_data');
+add_action('wp_ajax_nopriv_fetch_listings', 'fetch_listings_data');
+
+function fetch_listings_data() {
+    global $wpdb;
+
+    $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 10;
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $date = isset($_POST['date']) ? sanitize_text_field($_POST['date']) : "";
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : "";
+    $offset = ($page - 1) * $limit;
+
+    $user_id = $_COOKIE["user_id"];
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'User not logged in'], 401);
+    }
+
+    // Dynamic WHERE conditions
+    $conditions = ["l.userID = %d"];
+    $params = [$user_id];
+
+    if (!empty($date)) {
+        $conditions[] = "DATE(l.created_at) = %s";
+        $params[] = date("Y-m-d", strtotime($date));
+    }
+
+    if (!empty($status)) {
+        $conditions[] = "l.status = %s";
+        $params[] = $status;
+    }
+
+    $whereClause = "WHERE " . implode(" AND ", $conditions);
+
+    // Fetch listings
+    $query = "SELECT l.id, l.title, l.price, l.created_at, l.status,
+                     parent_category.name as parent_category_name,
+                     child_category.name as sub_category_name
+              FROM listings l
+              LEFT JOIN categories child_category ON l.category = child_category.id
+              LEFT JOIN categories parent_category ON child_category.parent_id = parent_category.id
+              $whereClause
+              ORDER BY l.id DESC
+              LIMIT %d OFFSET %d";
+    array_push($params, $limit, $offset);
+
+    $results = $wpdb->get_results($wpdb->prepare($query, ...$params), ARRAY_A);
+
+    // Get total listings count
+    $totalQuery = "SELECT COUNT(*) FROM listings l $whereClause";
+    $total = $wpdb->get_var($wpdb->prepare($totalQuery, ...array_slice($params, 0, count($params) - 2)));
+
+    // Response
+    $response = [
+        'data' => $results,
+        'total' => $total,
+        'page' => $page,
+        'limit' => $limit,
+    ];
+
+    wp_send_json_success($response);
+}
+
+
+
+
+// message listing
+
+add_action('wp_ajax_fetch_filtered_listings', 'fetch_filtered_listings_data');
+add_action('wp_ajax_nopriv_fetch_filtered_listings', 'fetch_filtered_listings_data');
+
+function fetch_filtered_listings_data() {
+    global $wpdb;
+
+    $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 10;
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $date = isset($_POST['date']) ? sanitize_text_field($_POST['date']) : "";
+    $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : "";
+
+    $offset = ($page - 1) * $limit;
+    $user_id = $_COOKIE["user_id"];
+
+    if (!$user_id) {
+        wp_send_json_error(['message' => 'User not logged in'], 401);
+    }
+
+    // Build WHERE conditions dynamically
+    $conditions = ["l.userID = %d"];
+    $params = [$user_id];
+
+    if (!empty($date)) {
+        $conditions[] = "DATE(l.created_at) = %s";
+        $params[] = date("Y-m-d", strtotime($date));
+    }
+
+    if (!empty($category_id)) {
+        $conditions[] = "l.category_id = %d";
+        $params[] = $category_id;
+    }
+
+    if (!empty($status)) {
+        $conditions[] = "l.status = %s";
+        $params[] = $status;
+    }
+
+    $whereClause = "WHERE " . implode(" AND ", $conditions);
+
+    // Fetch filtered listings
+    $query = "SELECT l.id, l.title, l.price, l.created_at, l.status,
+                     parent_category.name AS parent_category_name,
+                     child_category.name AS sub_category_name
+              FROM listings l
+              LEFT JOIN categories child_category ON l.category_id = child_category.id
+              LEFT JOIN categories parent_category ON child_category.parent_id = parent_category.id
+              $whereClause
+              ORDER BY l.id DESC
+              LIMIT %d OFFSET %d";
+    array_push($params, $limit, $offset);
+
+    $results = $wpdb->get_results($wpdb->prepare($query, ...$params), ARRAY_A);
+
+    // Get total filtered listings count for pagination
+    $totalQuery = "SELECT COUNT(*) FROM listings l $whereClause";
+    $total = $wpdb->get_var($wpdb->prepare($totalQuery, ...array_slice($params, 0, count($params) - 2)));
+
+    $response = [
+        'data' => $results,
+        'total' => $total,
+        'page' => $page,
+        'limit' => $limit,
+    ];
+
+    wp_send_json_success($response);
+}
+
+
+
+
+
+
+
+// login
+
+add_action('wp_ajax_user_login', 'user_login_handler');
+add_action('wp_ajax_nopriv_user_login', 'user_login_handler');
+
+function user_login_handler() {
+    global $wpdb;
+
+    $youremail = isset($_POST['youremail']) ? sanitize_text_field($_POST['youremail']) : '';
+    $password = isset($_POST['password']) ? sanitize_text_field($_POST['password']) : '';
+    $toPostnAdd = isset($_POST['toPostnAdd']) ? sanitize_text_field($_POST['toPostnAdd']) : '';
+
+    if (!$youremail || !$password) {
+        wp_send_json_error(['message' => 'Email and password are required!']);
+    }
+
+    $user = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM `account` WHERE (`username` = %s OR `email` = %s) AND `password` = %s",
+            $youremail,
+            $youremail,
+            $password
+        )
+    );
+
+    if ($user) {
+        if ($user->status == '1') {
+            setcookie("user_id", $user->id, time() + (86400 * 30), "/");
+            setcookie("user_role", $user->role, time() + (86400 * 30), "/");
+			
+			$_SESSION['auth'] = [
+                'username' => $user->username,
+				'email' => $user->email,
+				'contact' => $user->contact,
+				'firstname' => $user->firstname,
+				'lastname' => $user->lastname,
+				'profile' => $user->profile,
+            ];
+			
+            if (!empty($_POST["remember"])) {
+                setcookie("youremail", $youremail, time() + (86400 * 30), "/");
+                setcookie("password", $password, time() + (86400 * 30), "/");
+            } else {
+                setcookie("youremail", "", time() - 3600, "/");
+                setcookie("password", "", time() - 3600, "/");
+            }
+
+            $redirect_url = $toPostnAdd === 'sell' ? '/post-an-ad/' : '/dashboard/';
+            wp_send_json_success(['redirect' => $redirect_url]);
+        } else {
+            wp_send_json_error(['message' => 'Your account is inactive. Kindly contact admin to activate your account!']);
+        }
+    } else {
+        wp_send_json_error(['message' => 'Invalid login credentials!']);
+    }
+}
+
+
+// update profile
+// Add action for form submission handling
+// Register AJAX handler for logged-in users
+add_action('wp_ajax_manage_information_submit', 'handle_manage_information_submit');
+
+// Register AJAX handler for non-logged-in users (if needed)
+add_action('wp_ajax_nopriv_manage_information_submit', 'handle_manage_information_submit');
+
+function handle_manage_information_submit() {
+    // Parse form data
+    parse_str($_POST['formData'], $formData);
+
+    global $wpdb;
+
+    // Sanitize and retrieve form data
+    $firstName = sanitize_text_field($formData['firstName'] ?? '');
+    $lastName = sanitize_text_field($formData['lastName'] ?? '');
+    $phoneNumber = sanitize_text_field($formData['phoneNumber'] ?? '');
+    $state = sanitize_text_field($formData['state'] ?? '');
+    $city = sanitize_text_field($formData['city'] ?? '');
+
+    // Get current user ID
+    $user_id = $_COOKIE['user_id'] ?? 0;
+
+    if ($user_id) {
+        // Update user information in the database
+        $result = $wpdb->update(
+            'account',
+            [
+                'contact' => $phoneNumber,
+                'firstname' => $firstName,
+                'lastname' => $lastName,
+                'state' => $state,
+                'city' => $city,
+            ],
+            ['id' => $user_id],
+            ['%s', '%s', '%s', '%s', '%s'],
+            ['%d']
+        );
+
+        if ($result !== false) {
+			 $_SESSION['auth'] = array_merge($_SESSION['auth'], [
+				'city' => $city,
+				'state' => $state,
+				'contact' => $phoneNumber,
+				'firstname' => $firstName,
+				'lastname' => $lastName,
+			]);
+            wp_send_json_success(['message' => 'Profile updated successfully!']);
+        } else {
+            wp_send_json_error(['message' => 'Failed to update profile.']);
+        }
+    } else {
+        wp_send_json_error(['message' => 'Invalid user ID.']);
+    }
+
+    wp_die(); // Properly terminate AJAX request
+}
+
+
+// jquery date picker
+
+function enqueue_jquery_ui_datepicker() {
+    wp_enqueue_script('jquery-ui-datepicker');
+    wp_enqueue_style('jquery-ui-css', 'https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css');
+}
+add_action('wp_enqueue_scripts', 'enqueue_jquery_ui_datepicker');
 ?>

@@ -22,23 +22,18 @@ if(isset($_POST['submit'])){
 //     $typeProduct=$_POST['typeProduct']?$_POST['typeProduct']:'';
 	$category_level=$_POST['category_level']?$_POST['category_level']:'';
     $category_id=$_POST['category_id']?$_POST['category_id']:'';
-	$gender=$_POST['gender']?$_POST['gender']:'';
-	$age=$_POST['age']?$_POST['age']:'';
+	$gender = ($_POST['gender'] && ($_POST['category_level'] == '1')) ? $_POST['gender'] : 0;
+	$age = ($_POST['age'] && ($_POST['category_level'] == '1')) ? $_POST['age'] : 0;
     $description=$_POST['description']?$_POST['description']:'';
     $price=$_POST['price']?$_POST['price']:'';
-    $quantity=$_POST['quantity']?$_POST['quantity']:'';
-    $stock=$_POST['stock']?$_POST['stock']:'';
-    $weight=$_POST['weight']?$_POST['weight']:'';
 	$state=$_POST['state']?$_POST['state']:'';
 	$city=$_POST['city']?$_POST['city']:'';
-    $expireAt=$_POST['expireAt']?$_POST['expireAt']:'';
-    $sku=$_POST['sku']?$_POST['sku']:'';
     
     $fileUpload01 = '';
     if(!empty($_FILES["fileUpload01"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload01']['name'];
         $sourcePath = $_FILES['fileUpload01']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload01 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery1`='".$fileUpload01."' WHERE `id`='".$_GET['id']."' ");
@@ -49,7 +44,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["fileUpload02"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload02']['name'];
         $sourcePath = $_FILES['fileUpload02']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload02 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery2`='".$fileUpload02."' WHERE `id`='".$_GET['id']."' ");
@@ -60,7 +55,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["fileUpload03"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload03']['name'];
         $sourcePath = $_FILES['fileUpload03']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload03 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery3`='".$fileUpload03."' WHERE `id`='".$_GET['id']."' ");
@@ -71,7 +66,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["fileUpload04"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload04']['name'];
         $sourcePath = $_FILES['fileUpload04']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload04 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery4`='".$fileUpload04."' WHERE `id`='".$_GET['id']."' ");
@@ -82,7 +77,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["fileUpload05"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload05']['name'];
         $sourcePath = $_FILES['fileUpload05']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload05 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery5`='".$fileUpload05."' WHERE `id`='".$_GET['id']."' ");
@@ -93,7 +88,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["fileUpload06"]["type"])){
         $fileName = time().'_'.$_FILES['fileUpload06']['name'];
         $sourcePath = $_FILES['fileUpload06']['tmp_name'];
-        $targetPath = "/var/www/html/wordpress/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $fileUpload06 = "/wp-content/themes/amtopm-child/uploaded/listing/".$fileName;
             mysqli_query($con," UPDATE `listings` SET `gallery6`='".$fileUpload06."' WHERE `id`='".$_GET['id']."' ");
@@ -101,11 +96,15 @@ if(isset($_POST['submit'])){
     }
      
     $update=mysqli_query($con," UPDATE `listings` SET `title`='".$titleProduct."',`category_level`='".$category_level."',`category`='".$category_id."',`gender`='".$gender."',`age`='".$age."',`descriptions`='".$description."',`price`='".$price."',
-    `quantity`='".$quantity."',`stock`='".$stock."',`stockNumber`='".$sku."',`weight`='".$weight."',`state`='".$state."',`city`='".$city."', `end_at`='".$expireAt."' WHERE `id`='".$_GET['id']."' ");
-    
-    if($update){
-        header("location: /my-shop/");
-    }
+    `state`='".$state."',`city`='".$city."', `gallery1`='".$fileUpload01."', `gallery2`='".$fileUpload02."', `gallery3`='".$fileUpload03."', `gallery4`='".$fileUpload04."', `gallery5`='".$fileUpload05."', `gallery6`='".$fileUpload06."' WHERE `id`='".$_GET['id']."' ");
+	
+	
+	if ($update) {
+		header("location: /my-shop/");
+// 		exit();
+	} else {
+		echo "Error in query: " . mysqli_error($con);
+	}
     
 }
 
@@ -216,18 +215,18 @@ get_header();
                                     <h3>The Logistics</h3>
                                     <p>Product price, weight, quantity</p>
 									
-										<div class="flex-block-item flex-block-item01">
+										<div class="flex-block-item flex-block-item01 gender_box">
 											 <label class="template-label">Gender</label>
-											 <select id="top_category" name="gender" style="width: 100%;" required>
+											 <select id="top_category" name="gender" class="gender_field" style="width: 100%;" required>
 												 <option value="">Select Gender</option>
 												 <option value="1" <?php echo ($editListing['gender'] == 1) ? 'selected' : ''; ?>>Male</option>
 												 <option value="2" <?php echo ($editListing['gender'] == 2) ? 'selected' : ''; ?>>Female</option>
 											 </select>
 										</div>
 
-										<div class="flex-block-item flex-block-item02">
+										<div class="flex-block-item flex-block-item02 age_box">
 											<label class="template-label">Age</label>
-											<input type="text" id="age" name="age" placeholder="Enter Age" maxlength="2" value="<?php echo $editListing['age']; ?>" required/>
+											<input type="text" id="age" name="age" class="age_field" placeholder="Enter Age" maxlength="2" value="<?php echo $editListing['age']; ?>" required/>
 										</div>
                                     
                                          <div class="flex-block flex-block02">
@@ -240,38 +239,7 @@ get_header();
                                                </div>
                                               <label class="template-label-bottom">Must be in <strong>USD</strong></label>
                                             </div>
-                                            <div class="flex-block-item flex-block-item03">   
-                                                <div class="inner-form-flex-block">
-                                                    <div class="inner-form-flex-block-item inner-form-flex-block-item01">
-                                                        <label class="template-label" for="quantity">Quantity</label>
-                                                        <input type="number" id="quantity" name="quantity" value="<?php echo $editListing['quantity']; ?>" required />
-                                                    </div>
-                                                    
-                                                    <div class="inner-form-flex-block-item inner-form-flex-block-item04">
-                                                        <select name="stock" required>
-                                                              <option value="" selected disabled>Select Option</option>
-                                                              <option <?php if($editListing['stock']=='Instock'){ echo "selected"; } ?> value="Instock">Instock</option>
-                                                              <option <?php if($editListing['stock']=='Out of Stock'){ echo "selected"; } ?> value="Out of Stock">Out of Stock</option>
-                                                        </select>
-                                                    </div>
-                                                    
-                                                </div>
-                                                <div class="flex-block-item flex-block-item04">
-                                                  <label class="template-label" for="weight">Weight</label>
-                                                  <p>Please enter only unit weight. Dont type lbs in the box.</p>
-                                                  <input type="number" id="weight" name="weight" value="<?php echo $editListing['weight']; ?>" required />
-                                                  <label class="template-label-bottom">Must be in <strong>LBS</strong></label>
-                                                </div>
-                                                <div class="flex-block-item flex-block-item03">
-                                                  <label class="template-label" for="sku">SKU</label>
-                                                  <input type="text" id="sku" name="sku" value="<?php echo $editListing['stockNumber']; ?>" required />
-                                                </div>
-                                                <div class="flex-block-item flex-block-item05">
-                                                  <label class="template-label" for="expireAt">Expire At</label>
-                                                  <input type="date" id="expireAt" name="expireAt" value="<?php echo $editListing['end_at']; ?>" required />
-                                                </div>
-                                            </div>
-
+                                            
                                       </div>
                                 </div>
                             </div>
@@ -345,10 +313,10 @@ get_header();
 											</select>
 										</div>
 
-											 <div class="flex-block-item flex-block-item02">
-												 <label class="template-label">City</label>
-												 <input type="text" id="city" name="city" placeholder="Enter City" value="<?php echo $editListing['city']; ?>" required/>
-											 </div>
+										<div class="flex-block-item flex-block-item02">
+											<label class="template-label">City</label>
+											<input type="text" id="city" name="city" placeholder="Enter City" value="<?php echo $editListing['city']; ?>" required/>
+										</div>
                                       </div>
                                 </div>
                             </div>
@@ -449,11 +417,19 @@ jQuery(document).ready(function($) {
     $('#top_category').on('change', function() {
         var topCategory = $(this).val();
         categoryDropdownsWrapper.empty(); // Clear existing dropdowns
-
+		var validCategories = [2, 3, 4];
+		
         if (topCategory) {
+			if (validCategories.includes(parseInt(topCategory))) {
+				$('.gender_box, .age_box').hide();
+			} else {
+				$('.gender_box, .age_box').show();
+			}
+			
             createDropdown(topCategory);
         }
     });
+	
 
     function loadCategoryHierarchy(selectedId) {
         $.ajax({

@@ -74,6 +74,222 @@ if(isset($_GET['paypalReturn'])){
 
 get_header();
 ?>
+<style>
+.error{
+	color: red !important;
+	font-size: 13px !important;
+    padding: 10px !important;
+	background-color: transparent !important;
+}
+.ruk-promotion-price-card .pricing-card {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/*         width: 320px; */
+        text-align: center;
+}
+.ruk-promotion-price-card .pricing-card h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #0d3b66;
+        margin-bottom: 20px;
+    }
+.ruk-promotion-price-card .price-option {
+        display: flex;
+        align-items: center;
+        justify-content: start;        
+        color: #fff;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        position: relative;
+}
+.ruk-promotion-price-card .price-option {
+    background-image:url(/wp-content/uploads/2024/11/permotion-card-heading-bg.png);
+    background-repeat:no-repeat;
+/*     background-size:contain; */
+	background-size: 100% 62px !important;
+    background-position:center center;
+}
+.ruk-promotion-price-card .price-option .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background-color: #7A1715;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #fff;
+        margin-top: -10px;
+        border: 4px solid #FFD166;
+	    margin-left: -20px;
+    }
+.ruk-promotion-price-card .price-option .price {
+        font-size: 1.25rem;
+        font-weight: bold;
+ }
+ .ruk-promotion-price-card .price-option .duration {
+        font-size: 0.8rem;
+        font-weight: normal;
+        color: #adb5bd;
+        margin-left: 5px;
+    }
+.ruk-promotion-price-card .icon img {
+        width: 70%;
+        height: auto;
+        border-radius: 50%;
+    }
+    /* Specific styling for the discount text */
+.ruk-promotion-price-card .discount-text {
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #fff;
+}
+
+.ruk-product-promotion-sec {
+    border: 0.3px solid #eaeaea;
+    border-radius:14px;
+	margin: 40px 0px;
+    padding: 40px 24px;
+}
+
+.ruk-product-promotion-sec .promote-store {
+/*   padding: 40px 36px 40px 24px; */
+  margin: 27px 30px 48px 13px;
+  /* width: 1141px;
+  height: 604px; */
+/*   border: 0.3px solid #b9b9b9; */
+/*   border-radius: 14px; */
+}
+
+.ruk-product-promotion-sec .promote-store h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #202224;
+}
+.ruk-product-promotion-sec .promotion-des {
+    color: #39393A;
+}
+.ruk-product-promotion-sec .promote-store p {
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 27px;
+  color: #39393a;
+}
+.ruk-product-promotion-sec .promote-store span {
+  padding: 11px 40px;
+  background-color: #e5f4ff;
+  color: #003459;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  margin-right: 12px;
+}
+
+.ruk-product-promotion-sec .promote-store form {
+  margin-top: 49px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+	
+.ruk-product-promotion-sec .promote-store form label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #adadad;
+}
+.ruk-product-promotion-sec .formValidationQuery select, input {
+    border: unset !important;
+    background-color: #F5F6FA !important;
+    height:42px !important;
+    box-shadow:unset !important;
+}
+.ruk-product-promotion-sec .promote-store form select {
+  width: 100%;
+  padding: 11px 0 11px 16px;
+  border: 0.6px solid #d5d5d5;
+  background-color: #f5f6fa;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.ruk-product-promotion-sec .promote-store form input {
+  width: 100%;
+  padding: 11px 0 11px 16px;
+  border: 0.6px solid #d5d5d5;
+  background-color: #f5f6fa;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ruk-product-promotion-sec .promote-store form button {
+  padding: 10px 24px;
+  border-radius: 60px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #8B1339;
+  align-self: flex-end;
+}
+
+
+.ruk-product-promotion-sec .ruk-promotion-price-card {
+/*     display: flex;
+    justify-content: space-between; */
+	display:grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+}
+
+.ruk-promotion-price-card .price-option .discount-text img {
+    min-width: 36px !important;
+    
+}
+
+.ruk-promotion-price-card .price-text {
+    font-size: 24px;
+    font-family: 'Manrope';
+    font-weight:bold;
+    margin-top:-10px;
+    margin-left: 16px;
+}
+
+.ruk-promotion-price-card .percentage {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Manrope';    
+}
+
+
+.ruk-promotion-price-card .off {
+    font-size: 9px;
+    font-family: 'Manrope';    
+}	
+.ruk-promote-pro-form {
+    width: 100% !important;
+}	
+
+@media screen and (max-width: 1440px) {  
+.ruk-promotion-price-card .price-text {
+    font-size: 18px !important;
+    font-family: 'Manrope';
+    font-weight: bold;
+    margin-top: -10px;
+    margin-left: 8px !important;
+}
+  
+.ruk-promotion-price-card .pricing-card h3 {
+    font-size: 1.3rem !important;
+} 
+  
+}  
+</style>
+
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" id="paypal_main_form" method="post" style="display:none;">
     <input type="hidden" name="business" value="sb-q1vaj30147122@business.example.com" />
     <input type="hidden" name="cmd" value="_xclick" />
@@ -94,100 +310,214 @@ get_header();
                 </div>
                 <!-- Start Template Page Content-->
                 <div class="main-content-class">
-                    <div class="inner-page-content">
-                        <div class="template-page-title">
-                            <h2>PRODUCT PROMOTION</h2>
-                        </div>
-                        <!--==== Template Form-->
-                        <div class="common-form-class my-shop-form">
-                            <div class="form-title">
-                                <h4>Promote Your Store</h4>
-                            </div>
-                            <div class="template-form promotionpage">
-                                <form id="shopForm" class="formValidationQuery" method="POST" enctype="multipart/form-data">
-                                    <?php
-                                        if(isset($stripeResponse) && $stripeResponse!='success'){
-                                    ?>
-                                    <p style="color:red;font-size:16px;text-align:center;" class="stripe-error-message">Stripe error: <?php echo $stripeResponse; ?></p>
-                                    <?php
-                                        }
-                                    ?> 
-                                    <div class="flex-block flex-block01">
-                                    <div class="flex-block-item flex-block-item01">
-                                        <label class="template-label">Budget</label>
-                                        <ul class="promotionsBudget">
-                                            <?php
-                                                $productPromotions=mysqli_query($con,"SELECT * FROM `productPromotion` where `type`='store' and `status`='1' "); 
-                                                while($productPromotion = mysqli_fetch_array($productPromotions)){
-                                            ?>
-                                            <li><?php echo $productPromotion['name'].' : $'.$productPromotion['price']; ?></li>
-                                            <?php } ?>
-                                        </ul>
-                                    </div> 
-                                    </div>
-                                    <div class="flex-block flex-block02">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="product-for-promotion">Select Product For Promotion</label>
-                                             <select class="form-control" id="product-for-promotion" name="productForPromotion" required>
-                                                <option value="">--- Select a product ---</option>
-                                                <?php
-                                                    $listings=mysqli_query($con,"SELECT * FROM `listings` where `userID`='".$_COOKIE["user_id"]."' "); 
-                                                    while($listing = mysqli_fetch_array($listings)){
-                                                ?>
-                                                <option value="<?php echo $listing['id']; ?>"><?php echo $listing['title']; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-block flex-block03">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="choose-promotion">Choose A Promotion</label>
-                                             <select class="form-control" id="choose-promotion" name="choosePromotion" required>
-                                                <option value="">Select Promotion</option>
-                                                <?php
-                                                    $productPromotions=mysqli_query($con,"SELECT * FROM `productPromotion` where `type`='store' and  `status`='1' "); 
-                                                    while($productPromotion = mysqli_fetch_array($productPromotions)){
-                                                ?>
-                                                <option value="<?php echo $productPromotion['id']; ?>"><?php echo $productPromotion['name']; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-block flex-block04">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="days-weeks-months">Days/Weeks/Months</label>
-                                            <input type="number" id="days-weeks-months" name="daysWeeksMonths" min=1 placeholder="1" required />
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-block flex-block04">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="startDate">Start Date</label>
-                                            <input type="date" id="startDate" name="startDate" required />
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-block flex-block04">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="endDate">End Date</label>
-                                            <input type="date" id="endDate" name="endDate" required />
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="flex-block flex-block03">
-                                        <div class="flex-block-item flex-block-item01">
-                                             <label class="template-label" for="choose-merchant">Choose A Merchant</label>
-                                             <select class="form-control" id="choose-merchant" name="merchant" required>
-                                                <option value="">Select Merchant</option>
-                                                <option value="paypal">Paypal</option>
-                                                <option value="stripe">Stripe</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div id="payment-stripe" class="container" style="display:none;">
+					
+					
+					    <div class="ruk-product-promotion-sec">
+							<div class="promotion-heading">
+								<h2 class="pro-h">Promote Your Store</h2>
+							    <p class="promotion-des">2 Listings are free (1 individual & 1 Breeder)</p>
+							</div>
+							
+							<div class="ruk-promotion-price-card">								
+								<div class="pricing-card">
+									<h3>1 Extra Listing</h3>
+
+									<!-- Price Option 2 -->
+									<div class="price-option">
+										<div class="icon">
+											<span class="discount-text"><img src="/wp-content/uploads/2024/11/Vector-icons.png" alt="" /></span>
+										</div>
+										<div class="price">
+											<div class="price-text">
+											    $2.99<span class="duration">/mon</span>
+											</div>
+										</div>
+									</div>
+									<!-- Price Option 3 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">10%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $7.99<span class="duration">/3mon</span>
+											</div>
+									</div>
+									<!-- Price Option 4 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">20%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $27.99<span class="duration">/3mon</span>
+											</div>
+									</div>									
+								</div>								
+								<div class="pricing-card">
+									<h3>3 Extra Listing</h3>
+
+									<!-- Price Option 2 -->
+									<div class="price-option">
+										<div class="icon">
+											<span class="discount-text"><img src="/wp-content/uploads/2024/11/Vector-icons.png" alt="" /></span>
+										</div>
+										<div class="price">
+											<div class="price-text">
+											    $2.99<span class="duration">/mon</span>
+											</div>
+										</div>
+									</div>
+									<!-- Price Option 3 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">10%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $7.99<span class="duration">/3mon</span>
+											</div>
+									</div>
+									<!-- Price Option 4 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">20%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $27.99<span class="duration">/3mon</span>
+											</div>
+									</div>									
+								</div>		
+								<div class="pricing-card">
+									<h3>5 Extra Listing</h3>
+
+									<!-- Price Option 2 -->
+									<div class="price-option">
+										<div class="icon">
+											<span class="discount-text"><img src="/wp-content/uploads/2024/11/Vector-icons.png" alt="" /></span>
+										</div>
+										<div class="price">
+											<div class="price-text">
+											    $2.99<span class="duration">/mon</span>
+											</div>
+										</div>
+									</div>
+									<!-- Price Option 3 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">10%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $7.99<span class="duration">/3mon</span>
+											</div>
+									</div>
+									<!-- Price Option 4 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">20%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $27.99<span class="duration">/3mon</span>
+											</div>
+									</div>									
+								</div>		
+								<div class="pricing-card">
+									<h3>Breeder Verified</h3>
+
+									<!-- Price Option 2 -->
+									<div class="price-option">
+										<div class="icon">
+											<span class="discount-text"><img src="/wp-content/uploads/2024/11/Vector-icons.png" alt="" /></span>
+										</div>
+										<div class="price">
+											<div class="price-text">
+											    $2.99<span class="duration">/mon</span>
+											</div>
+										</div>
+									</div>
+									<!-- Price Option 3 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">10%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $7.99<span class="duration">/3mon</span>
+											</div>
+									</div>
+									<!-- Price Option 4 -->
+									<div class="price-option">
+										<div class="icon">
+											<div class="discount-text"><span class="percentage">20%</span> <span class="off"><br>Off</span></div>
+										</div>
+											<div class="price-text">
+											    $27.99<span class="duration">/3mon</span>
+											</div>
+									</div>									
+								</div>																																		
+								
+							</div>														
+							<div class="promote-store">
+							  <span>DAILY:$.50</span>
+							  <span>WEEKLY:$3.50</span>
+							  <span>MONTHLY:$15</span>
+
+                              <form id="shopForm" class="formValidationQuery" method="POST" enctype="multipart/form-data">
+								  <?php if(isset($stripeResponse) && $stripeResponse!='success'){ ?>
+                    				<p style="color:red;font-size:16px;text-align:center;" class="stripe-error-message">Stripe error: <?php echo $stripeResponse; ?></p>
+								  <?php } ?>
+								<div class="pro-promotion-sele">
+								  <label for="select-product">Select Product For Promotion</label
+								  ><br />
+								  <select name="productForPromotion" class="productPromotion" id="select-product" required>
+									  <option value="">--- Select a product ---</option>
+										<?php
+										  $listings=mysqli_query($con,"SELECT * FROM `listings` where `userID`='".$_COOKIE["user_id"]."' "); 
+										  while($listing = mysqli_fetch_array($listings)){
+										  ?>
+										  <option value="<?php echo $listing['id']; ?>"><?php echo $listing['title']; ?></option>
+										<?php } ?>
+								  </select>
+									<span class="error" id="productError"></span>
+								</div>
+								<div class="choose-promotion-selec">
+								  	<label for="choose-promotion">Choose A Promotion</label><br />
+								   	<select name="choosePromotion" class="promotion" required id="select-product" required>
+										<option value="">Select Promotion</option>
+										<?php
+											$productPromotions=mysqli_query($con,"SELECT * FROM `productPromotion` where `type`='store' and  `status`='1' "); 
+											while($productPromotion = mysqli_fetch_array($productPromotions)){
+										?>
+											<option value="<?php echo $productPromotion['id']; ?>"><?php echo $productPromotion['name']; ?></option>
+										<?php } ?>
+									</select>
+									<span class="error" id="productPromotionError"></span>
+								</div>
+
+								<div class="duration-promotion">
+								  	<label for="duration">Days/Weeks/Months</label><br />
+									<input type="number" id="days-weeks-months" name="daysWeeksMonths" min=1 placeholder="1" required />
+									<span class="error" id="daysWeeksMonthsError"></span>
+								</div>
+								  
+								<div class="start-date-promotion">
+								  	<label for="duration">Start Date</label><br />
+									<input type="date" id="startDate" name="startDate" required />
+									<span class="error" id="startDateError"></span>
+								</div>
+								  
+								<div class="end-date-promotion">
+								  	<label for="duration">End Date</label><br />
+                                    <input type="date" id="endDate" name="endDate" required />
+									<span class="error" id="endDateError"></span>
+								</div>
+								  
+								<div class="choose-pay-method">
+								  	<label for="duration">Choose A Merchant</label><br />
+									<select id="choose-merchant" name="merchant" required>
+										<option value="">Select Merchant</option>
+										<option value="paypal">Paypal</option>
+										<option value="stripe">Stripe</option>
+									</select>
+								</div>
+								    
+								<div id="payment-stripe" class="container" style="display:none;">
                                       <div class="row text-left">
                                         <div class="col-sm-12">
                                           <div class="form-group">
@@ -218,91 +548,13 @@ get_header();
                                         </div>
                                       </div>
                                     </div>
-                                    
-                                    <!--====== Template Form Button-->
-                                    <div class="template-form-button">
-                                        <input type="submit" name="submit" value="Next" class="next" style="display:none;">
-                                        <button type="button" id="validate" style="cursor:pointer;">Next</button>
-                                    </div>
-                                    <!--====== Template Form Button-->
-                                </form>
-                            </div>
-                        </div>
-                        <div class="template-page-history">
-                <h4>History</h4>
-                <div class="history-tablel-records">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col">Product Name</th>
-                                <th scope="col">Start Date</th>
-                                <th scope="col">End Date</th>
-                                <th scope="col">Duration <span>(In Days)</span></th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Is Paid</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $leaderBoardPromotions=mysqli_query($con,"SELECT * FROM `productPromotionStore` where `userID`='".$_COOKIE["user_id"]."' "); 
-                                while($leaderBoardPromotion = mysqli_fetch_array($leaderBoardPromotions)){
-                                    $products=mysqli_query($con,"SELECT * FROM `listings` where `id`='".$leaderBoardPromotion["product"]."' "); 
-                                    $product = mysqli_fetch_array($products);
-                                    $productPromotions=mysqli_query($con,"SELECT * FROM `productPromotion` where `id`='".$leaderBoardPromotion["promotion"]."' "); 
-                                    $productPromotion = mysqli_fetch_array($productPromotions);
-                            ?>
-                            <tr>
-                                <td><?php if(isset($product['id'])){ echo $product['title']; } ?></td>
-                                <td><?php if($leaderBoardPromotion['startDate']!=''){ echo date("F d, Y", strtotime($leaderBoardPromotion['startDate'])); } ?></td>
-                                <td><?php if($leaderBoardPromotion['endDate']!=''){ echo date("F d, Y", strtotime($leaderBoardPromotion['endDate'])); } ?></td>
-                                <td><?php echo $leaderBoardPromotion['duration']; ?> <?php if(isset($productPromotion['id'])){ 
-                                    if($productPromotion['option']=='daily'){
-                                        echo "days";
-                                    }
-                                    if($productPromotion['option']=='weekly'){
-                                        echo "weeks";
-                                    }
-                                    if($productPromotion['option']=='monthly'){
-                                        echo "months";
-                                    }
-                                    if($productPromotion['option']=='yearly'){
-                                        echo "years";
-                                    }
-                                } ?></td>
-                                <td><?php if(isset($productPromotion['id'])){ echo "$".$productPromotion['price']; } ?></td>
-                                <td>
-                                <?php
-                                    $start_date = $leaderBoardPromotion['startDate'];
-                                    $end_date = $leaderBoardPromotion['endDate'];
-                                    $current_date = date("Y-m-d");
-                                    if(($start_date=='' && $end_date=='') || (strtotime($current_date) >= strtotime($start_date) && strtotime($current_date) <= strtotime($end_date))) {
-                                        if($leaderBoardPromotion['status']==0){ 
-                                            echo "Pending";
-                                        }elseif($leaderBoardPromotion['status']==1){
-                                            echo "Active"; 
-                                        }else{
-                                            echo "Rejected";
-                                        }
-                                    } else {
-                                        echo "Expired";
-                                    }
-                                ?>
-                                </td>
-                                <td>
-                                    <?php if($leaderBoardPromotion['paid']==1){ ?>
-                                    <a class="paid">Paid</a>
-                                    <?php }else{ ?>
-                                    <a style="cursor:pointer;" data-price="<?php if(isset($productPromotion['id'])){ echo $productPromotion['price']; }else{ echo 0; } ?>" data-id="<?php echo $leaderBoardPromotion['id']; ?>" class="unpaid paypalButtonPayNow">Unpaid</a>
-                                    <?php } ?>
-                                </td>
-                            </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table> 
-                </div>
-            </div>
-                    </div>
+								  
+<!-- 								<button type="submit">Next</button> -->
+								  	<input type="submit" name="submit" value="Next" class="next" style="display:none;">
+                                    <button type="button" id="validate" style="cursor:pointer;">Next</button>
+							  </form>
+							</div>
+						  </div>
                 </div>
                 <!-- End Template Page Content-->
             </div>
@@ -312,7 +564,8 @@ get_header();
 <?php
 get_footer();
 ?>
-<script>
+<script>	
+	
 <?php if(isset($paypalPrice)){ ?>
     jQuery('form#paypal_main_form input[name="submit"]').click();
 <?php } ?>
@@ -459,5 +712,48 @@ jQuery(document).on("change",'input[name="startDate"]',function(){
       if(jQuery(this).val()!=''){
         jQuery('input[name="endDate"]').attr('min',jQuery(this).val());    
       }
+});
+	
+	
+	
+jQuery(document).ready(function ($) {
+    console.log('call');
+
+	// Helper function to validate both input and select fields
+	function validateField(selector, errorSelector) {
+		let value = $(selector).val().trim();
+		let errorField = $(errorSelector);
+		let isValid = true;
+
+		if (value === '' || value === null) {
+			errorField.text('This field is required');
+			isValid = false;
+		} else {
+			errorField.text('');
+		}
+
+		return isValid;
+	}
+
+
+    // On form submission
+    $('#shopForm').on('submit', function (event) {
+        let isValid = true;
+
+        // Validate each field
+        isValid = validateField('#days-weeks-months', '#daysWeeksMonthsError') && isValid;
+        isValid = validateField('#startDate', '#startDateError') && isValid;
+        isValid = validateField('#endDate', '#endDateError') && isValid;
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+
+    // Handle custom "Next" button click
+    $('#validate').on('click', function () {
+        $('#shopForm').submit();
+    });
 });
 </script>

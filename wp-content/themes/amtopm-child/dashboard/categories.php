@@ -58,7 +58,7 @@ if(isset($_POST['submit'])){
     if(!empty($_FILES["image"]["type"])){
         $fileName = time().'_'.$_FILES['image']['name'];
         $sourcePath = $_FILES['image']['tmp_name'];
-        $targetPath = "/home/hailogic/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $category = "/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
         }
@@ -86,7 +86,7 @@ if(isset($_POST['update'])){
     if(!empty($_FILES["image"]["type"])){
         $fileName = time().'_'.$_FILES['image']['name'];
         $sourcePath = $_FILES['image']['tmp_name'];
-        $targetPath = "/home/hailogic/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
+        $targetPath = "/www/wwwroot/thebullysupply.com/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
         if(move_uploaded_file($sourcePath,$targetPath)){
             $category = "/wp-content/themes/amtopm-child/uploaded/category/".$fileName;
         }

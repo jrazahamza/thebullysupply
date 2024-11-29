@@ -8,11 +8,6 @@ if(isset($_POST['submit'])){
 //     $categories=$_POST['categories']?implode(",",$_POST['categories']):'';
     $description=$_POST['description']?$_POST['description']:'';
     $price=$_POST['price']?$_POST['price']:'';
-    $quantity=$_POST['quantity']?$_POST['quantity']:'';
-    $stock=$_POST['stock']?$_POST['stock']:'';
-    $weight=$_POST['weight']?$_POST['weight']:'';
-    $expireAt=$_POST['expireAt']?$_POST['expireAt']:'';
-    $sku=$_POST['sku']?$_POST['sku']:'';
     $status=$_POST['status']?$_POST['status']:'pending';
     
     $fileUpload01 = '';
@@ -88,7 +83,7 @@ if(isset($_POST['submit'])){
     }
      
     $query = " UPDATE `listings` SET `title`='".$titleProduct."',`descriptions`='".$description."',`price`='".$price."',
-    `quantity`='".$quantity."',`stock`='".$stock."',`stockNumber`='".$sku."',`weight`='".$weight."',`end_at`='".$expireAt."', `status`='".$status."' WHERE `id`='".$id."' ";
+     `status`='".$status."' WHERE `id`='".$id."' ";
     $wpdb->query($query);
 }
 if(isset($_GET['list-delete'])){
@@ -109,12 +104,7 @@ if(isset($_GET['list-delete'])){
     	    <tr>
     			<th>#</th>
                 <th>Title</th>
-                <th>Type</th>
-                <th>SKU</th>
                 <th>Price</th>
-                <th>Qty</th>
-                <th>Stock</th>
-                <th>End Time</th>
                 <th>Status</th>
     			<th>Action</th>
     		</tr>
@@ -145,11 +135,7 @@ if(isset($_GET['list-delete'])){
     			    </div>
                 </td>
                 <td><?php if(isset($type->id)){ echo $type->name; } ?></td>
-                <td><?php echo $listing->stockNumber; ?></td>
                 <td>$<?php echo $listing->price; ?></td>
-                <td><?php echo $listing->quantity; ?></td>
-                <td><?php echo $listing->stock; ?></td>
-                <td><?php echo date("F d, Y", strtotime($listing->end_at)); ?></td>
                 <td><?php echo ucfirst($listing->status); ?></td>
     			<td>
     			    <a data-bs-toggle="modal" data-bs-target="#vendorsDetailed<?php echo $listing->id; ?>"  class="detail"><i class="fa fa-eye"></i> Detail</a>
@@ -254,35 +240,6 @@ if(isset($_GET['list-delete'])){
                                       <label class="template-label-bottom">Must be in <strong>USD</strong></label>
                                     </div>
                                     <div class="flex-block-item flex-block-item02">   
-                                        <div class="inner-form-flex-block">
-                                            <div class="inner-form-flex-block-item inner-form-flex-block-item01">
-                                                <label class="template-label" for="quantity">Quantity</label>
-                                                <input type="number" id="quantity" name="quantity" value="<?php echo $listing->quantity; ?>" required />
-                                            </div>
-                                            
-                                            <div class="inner-form-flex-block-item inner-form-flex-block-item02">
-                                                <select name="stock" required>
-                                                      <option value="" selected disabled>Select Option</option>
-                                                      <option <?php if($listing->stock=='Instock'){ echo "selected"; } ?> value="Instock">Instock</option>
-                                                      <option <?php if($listing->stock=='Out of Stock'){ echo "selected"; } ?> value="Out of Stock">Out of Stock</option>
-                                                </select>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="flex-block-item flex-block-item03">
-                                          <label class="template-label" for="weight">Weight</label>
-                                          <p>Please enter only unit weight. Dont type lbs in the box.</p>
-                                          <input type="number" id="weight" name="weight" value="<?php echo $listing->weight; ?>" required />
-                                          <label class="template-label-bottom">Must be in <strong>LBS</strong></label>
-                                        </div>
-                                        <div class="flex-block-item flex-block-item03">
-                                          <label class="template-label" for="sku">SKU</label>
-                                          <input type="text" id="sku" name="sku" value="<?php echo $listing->stockNumber; ?>" required />
-                                        </div>
-                                        <div class="flex-block-item flex-block-item03">
-                                          <label class="template-label" for="expireAt">Expire At</label>
-                                          <input type="date" id="expireAt" name="expireAt" value="<?php echo $listing->end_at; ?>" required />
-                                        </div>
                                         <div class="flex-block-item flex-block-item03">
                                           <label class="template-label" for="status">Status</label>
                                           <select name="status" required>
@@ -295,7 +252,6 @@ if(isset($_GET['list-delete'])){
                                           </select>
                                         </div>
                                     </div>
-    
                               </div>
                         </div>
                     </div>   
